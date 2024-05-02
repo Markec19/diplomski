@@ -1,0 +1,96 @@
+ <div class="error" *ngIf="saveUnsuccessful">
+    Sva polja moraju biti popunjena!
+</div>
+
+<div class="error" *ngIf="saveError">
+    Rezervacije u izabranom terminu već postoje!
+</div>
+
+<div class="error" *ngIf="saveNeispravnoVreme">
+    Vreme završetka ne sme biti pre vremena početka!
+</div>
+
+<div class="rezervacija">
+    <div class="title">Rezervacija</div>
+    <div class="rezervacija-form">
+        <form [formGroup]="rezervacijaForm" (ngSubmit)="onSubmit()">           
+
+            <div class="dropdown">
+                <label>Predmet:</label>
+                <select formControlName="predmet" [(ngModel)]="izabraniPredmetId">
+                    <option *ngFor="let predmet of predmeti" [value]="predmet.predmetId">
+                        {{ predmet.predmet }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="dropdown">
+                <label (click)="toggleTipSale()">Tip Sale:</label>
+                <select formControlName="tipSale" (change)="onTipSaleChange($event)" *ngIf="toggleTip" >
+                    <option *ngFor="let tip of tipSale" [value]="tip.tipSaleId">
+                        {{ tip.tip }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="dropdown">
+                <div id="list1" class="dropdown-check-list" [class.open]="dropdown">
+                    <span class="anchor" (click)="toggleDropdown($event)">Izaberite Salu</span>
+                    <ul class="items" *ngIf="true">
+                        <div *ngIf="!izabraniTipSale">
+                            <li *ngFor="let item of izabraneSale">
+                                <label>
+                                    <input type="checkbox" formControlName="izabraneSale" [(ngModel)]="item.checked" (change)="onChange(item)"> {{ item.sala.sala }}
+                                </label>
+                            </li>
+                        </div>
+                        <div *ngIf="izabraniTipSale">
+                            <li *ngFor="let item of sale">
+                                <label>
+                                    <input type="checkbox" formControlName="izabraneSale" [(ngModel)]="item.checked" (change)="onChange(item)"> {{ item.sala.sala }}
+                                </label>
+                            </li>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="vremePocetka" class="input">
+                <label>Vreme Početka: </label>
+                <timepicker [(ngModel)]="vremePocetka" formControlName="vremePocetka" [showMeridian]="false" [min]="minTimePocetak" [max]="maxTime"></timepicker>
+            </div>
+
+            <div id="vremeZavrsetka" class="input">
+                <label>Vreme Završetka: </label>
+                <timepicker [(ngModel)]="vremeZavrsetka" formControlName="vremeZavrsetka" [showMeridian]="false" [min]="minTimeZavrsetak" [max]="maxTime"></timepicker>
+            </div>
+
+            <div class="dropdown">
+                <select formControlName="tipRezervacije" (change)="onTipRezervacijeChange($event)">
+                    <option value="" disabled selected>Izaberite Tip Rezervacije</option>
+                    <option *ngFor="let tip of tipRezervacije" [value]="tip.tipRezervacijeId">
+                        {{ tip.tip }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="dropdown">
+                <select formControlName="podtipRezervacije" [(ngModel)]="izabraniPodtipId" [disabled]="!izabraniTipId">
+                    <option value="" disabled selected *ngIf="!izabraniTipId">Izaberite Podtip Rezervacije</option>
+                    <option *ngFor="let podtip of filteredPodtipRezervacije" [value]="podtip.podtipId">
+                        {{ podtip.podtip }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="button">
+                <div class="buttonPotvrdi">
+                    <button type="submit">Potvrdi</button>
+                </div>
+                <div class="buttonZatvori">
+                    <button (click)="zatvoriFormu()" type="button">Zatvori</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

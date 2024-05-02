@@ -1,0 +1,30 @@
+<div class="error" *ngIf="!loginSuccess">
+    Login je neuspesan! Korisnicko ime ili sifra su neispravni!
+</div>
+
+<div class="login">
+    <div class="title">Login</div>
+    <div class="login-form">
+        
+        <form [formGroup]="loginForm" (ngSubmit)="login()">
+
+            <div class="input">
+                <input type="text" formControlName="username" placeholder="username" id="username">
+                <div *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+                    Korisnicko ime nije uneto
+                </div>
+            </div>
+        
+            <div class="input">
+                <input type="password" formControlName="password" placeholder="password" id="password">
+                <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+                    Šifra nije uneta
+                </div>
+            </div>
+        
+            <div class="button">
+                <button type="submit">Login</button>
+            </div>
+        </form>
+    </div>
+</div>
