@@ -21,6 +21,7 @@ export class RezervacijeListaComponent implements OnInit{
   dodaj: boolean = false;
   statusi: Status[] = [];
   rola: Rola | null = null;
+  trenutniDatum: Date = new Date();
  
   constructor(private axiosService: AxiosService, private router: Router){}
 
@@ -107,6 +108,13 @@ export class RezervacijeListaComponent implements OnInit{
 
     this.lista = true;
     this.detalji = false;
+  }
+
+  nijeRanije(): boolean {
+    const trenutniDatum: Date = new Date();
+    if(this.datum > trenutniDatum)
+      return true;
+    return false;
   }
 
 

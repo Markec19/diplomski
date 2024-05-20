@@ -1,6 +1,6 @@
 <div class="rezervacija-lista container-fluid" *ngIf="lista === true">
     <div class="header bg-light p-3 rounded-top">
-        <h4 class="title">Rezervacija za {{ datum | date:'longDate' }}</h4>
+        <h4 class="title">Rezervacija za {{ datum.toLocaleDateString('en-GB') }}</h4>
     </div>
     <div class="body p-4">
         <div class="detalji" *ngIf="rezervacije && rezervacije.length > 0; else noReservations">
@@ -24,7 +24,7 @@
         </ng-template>
     </div>
     <div class="footer bg-light p-3 rounded-bottom d-flex justify-content-between">
-        <div *ngIf="rola !== null && rola.rola === 'korisnik'">
+        <div *ngIf="rola !== null && rola.rola === 'korisnik' && datum >= trenutniDatum">
             <button class="btn btn-success" (click)="dodajRezervaciju()">Dodaj Rezervaciju</button>
         </div>
         <button type="button" class="btn btn-secondary" (click)="zatvoriProzor()">Zatvori</button>
@@ -44,15 +44,15 @@
             </tr>
             <tr>
                 <td>Datum Rezervacije:</td>
-                <td>{{ rezervacija?.datumRezervacije }}</td>
+                <td>{{ rezervacija?.datumRezervacije?.toLocaleDateString('en-GB') }}</td>
             </tr>
             <tr>
                 <td>Datum Slanja Zahteva:</td>
-                <td>{{ rezervacija?.datumSlanjaZahteva }}</td>
+                <td>{{ rezervacija?.datumSlanjaZahteva?.toLocaleDateString('en-GB') }}</td>
             </tr>
             <tr>
                 <td>Datum Obrade:</td>
-                <td *ngIf="proveriDatum()">{{ rezervacija?.datumObrade }}</td>
+                <td *ngIf="proveriDatum()">{{ rezervacija?.datumObrade?.toLocaleDateString('en-GB') }}</td>
                 <td *ngIf="!proveriDatum()"></td>
             </tr>
             <tr>

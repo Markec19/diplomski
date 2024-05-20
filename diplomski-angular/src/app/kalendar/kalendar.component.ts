@@ -12,7 +12,8 @@ import { AxiosService } from '../service/axios.service';
 export class KalendarComponent implements OnInit{
   selectedDate: Date = new Date();
   currentDate: Date = new Date();
-  daniUNedelji: string[] = ['Pon', 'Uto', 'Sre', 'Cet', 'Pet', 'Sub', 'Ned'];
+  daniUNedelji: string[] = ['Pon', 'Uto', 'Sre', 'Čet', 'Pet', 'Sub', 'Ned'];
+  meseci: string[] = [];
   weeks: (number | null)[][] = [];
   rezervacije: Rezervacija[] = [];
 
@@ -23,6 +24,10 @@ export class KalendarComponent implements OnInit{
   constructor(private axiosService: AxiosService, private route: ActivatedRoute, private router: Router) {
     let token = this.axiosService.getAuthToken()
     if(token != null){
+      this.meseci = [
+        "Januar", "Februar", "Mart", "April", "Maj", "Jun",
+        "Jul", "Avgust", "Septembar", "Oktobar", "Novembar", "Decembar"
+      ];
       this.generateCalendar();
     }else {
       this.router.navigate(['/login']);
@@ -87,8 +92,9 @@ export class KalendarComponent implements OnInit{
   }
 
   getCurrentMonthName(): string {
-    return this.currentDate.toLocaleDateString('en-US', { month: 'long' });
-  } 
+    const mesecIndeks: number = this.currentDate.getMonth();
+    return this.meseci[mesecIndeks];
+  }
 
   getReservationsForDate(year: number, month: number, day: number): Rezervacija[] {
     const date = new Date(year, month, day);
