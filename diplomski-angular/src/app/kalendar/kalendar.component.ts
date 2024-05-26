@@ -106,10 +106,13 @@ export class KalendarComponent implements OnInit{
   }
 
   handleCellClick(year: number, month: number, day: number) {
-    console.log(`Clicked on date: ${year}-${month + 1}-${day}`);
-    this.selectedDate = new Date(year, month, day);    
-    this.prikaz = true;
-    this.rezervacijeDan = this.getReservationsForDate(year, month, day);
+    // console.log(`Clicked on date: ${year}-${month + 1}-${day}`);
+    // this.selectedDate = new Date(year, month, day);    
+    // this.prikaz = true;
+    // this.rezervacijeDan = this.getReservationsForDate(year, month, day);
+
+    localStorage.setItem("datum", this.selectedDate + "");
+    this.router.navigate(['/sale']);
   }
 
   vratiRezervacije(response: any): Rezervacija[] {

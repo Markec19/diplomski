@@ -1,4 +1,4 @@
- .rezervacija {
+ /* .rezervacija {
   width: 30em;
   margin: 20px auto;
   margin-top: 0.1em;
@@ -159,4 +159,43 @@ select {
   margin-bottom: 10px;
   border: 1px solid #f5c6cb;
   margin: 0 auto;
+} */
+
+
+
+
+
+
+
+
+
+
+.form-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+form div {
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input, select, button {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+button {
+  margin-top: 10px;
 }

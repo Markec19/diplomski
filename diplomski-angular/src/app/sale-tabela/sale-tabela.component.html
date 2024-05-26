@@ -1,0 +1,32 @@
+<div>
+    <table>
+      <thead>
+        <tr>
+          <th>Sala/Vreme</th>
+          <th *ngFor="let time of timeSlots">{{ time }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sala of sale">
+          <td>{{ sala.sala }}</td>
+          <ng-container *ngFor="let time of timeSlots">
+            <td *ngIf="!isCellCovered(sala, time)" [attr.colspan]="getColSpan(sala, time)" (click)="onCellClick(sala, time)" class="time-cell">
+              <div *ngIf="getReservationForCell(sala, time) as reservation" class="reservation" [ngClass]="reservation.status">
+                {{ reservation.predmet?.predmet }}
+              </div>
+            </td>
+          </ng-container>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <!-- <app-rezervacija *ngIf="dodaj" [date]="datum" [rezervacije]="rezervacije"></app-rezervacija> -->
+  <app-rezervacija *ngIf="izabranaCelija" [sala]="izabranaCelija.sala" [vremePocetka]="izabranaCelija.vreme" (formClose)="closeForm()"></app-rezervacija>
+  
+  
+  
+  
+  
+  
+  

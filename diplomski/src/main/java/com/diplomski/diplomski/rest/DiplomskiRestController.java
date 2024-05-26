@@ -28,10 +28,10 @@ public class DiplomskiRestController {
     private RezervacijaService rezervacijaService;
     private final UserAuthProvider userAuthenticationProvider;
 
-    @GetMapping("/hello")
-    public String sayHello(){
-        return "Hello World!";
-    }
+//    @GetMapping("/hello")
+//    public String sayHello(){
+//        return "Hello World!";
+//    }
 
 
     public DiplomskiRestController(RolaServiceImpl rolaService, ZaposleniServiceImpl zaposleniService,
@@ -132,7 +132,8 @@ public class DiplomskiRestController {
 
     @PutMapping("/obradi/rezervacija")
     public Rezervacija obradiRezervaciju(@RequestBody RezervacijaDto rezervacija) throws Exception {
-        return rezervacijaService.obradiRezervaciju(rezervacija);
+        Rezervacija rez = rezervacijaService.obradiRezervaciju(rezervacija);
+        return rez;
     }
 
 }

@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import axios from 'axios';
+import { Rezervacija } from '../models/rezervacija';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AxiosService {
+
+
+  private reservations: Rezervacija[] = [];
 
   constructor(private router: Router) {
     axios.defaults.baseURL="http://localhost:8080"
@@ -46,5 +50,9 @@ export class AxiosService {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('username');
     this.router.navigate(['/login']);
+  }
+
+  getReservations(): Rezervacija[] {
+    return this.reservations;
   }
 }

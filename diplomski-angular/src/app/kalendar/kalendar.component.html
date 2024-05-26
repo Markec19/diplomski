@@ -12,7 +12,7 @@
     </tr>
     <tr *ngFor="let week of weeks">
         <td *ngFor="let day of week" class="calendar-cell">
-            <div *ngIf="day != null" (click)="handleCellClick(currentDate.getFullYear(), currentDate.getMonth(), day)">
+            <div *ngIf="day != null" (dblclick)="handleCellClick(currentDate.getFullYear(), currentDate.getMonth(), day)">
                 <div class="date">{{ day }}</div>
                 <div class="reservations" *ngIf="day != null">
                     <div *ngFor="let rezervacija of getReservationsForDate(currentDate.getFullYear(), currentDate.getMonth(), day)"
@@ -31,7 +31,9 @@
 
 <button (click)="logout()">Logout</button>
 
-<app-rezervacije-lista class="overlay" *ngIf="prikaz === true" [datum]="selectedDate" [rezervacije]="rezervacijeDan" [lista]="true"></app-rezervacije-lista>
+<!-- <app-rezervacije-lista class="overlay" *ngIf="prikaz === true" [datum]="selectedDate" [rezervacije]="rezervacijeDan" [lista]="true"></app-rezervacije-lista> -->
+
+
 
 
 

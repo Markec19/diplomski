@@ -11,6 +11,8 @@ import { RezervacijeListaComponent } from './rezervacije-lista/rezervacije-lista
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { SaleComponent } from './sale/sale.component';
+import { SaleTabelaComponent } from './sale-tabela/sale-tabela.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
     KalendarComponent,
     RezervacijaFormComponent,
     RezervacijeListaComponent,
+    SaleComponent,
+    SaleTabelaComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,7 +34,7 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
     TimepickerModule.forRoot(),
   ],
   providers: [],
-  bootstrap: [AppComponent, RezervacijaFormComponent, RezervacijeListaComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }
