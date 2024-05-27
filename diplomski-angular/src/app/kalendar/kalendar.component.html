@@ -1,3 +1,5 @@
+<app-meni></app-meni>
+
 <div class="header">
     <button (click)="goToPreviousMonth()">Prethodni Mesec</button>
     <span>{{ getCurrentMonthName() }}</span>
@@ -12,33 +14,18 @@
     </tr>
     <tr *ngFor="let week of weeks">
         <td *ngFor="let day of week" class="calendar-cell">
-            <div *ngIf="day != null" (dblclick)="handleCellClick(currentDate.getFullYear(), currentDate.getMonth(), day)">
+            <div *ngIf="day != null" (click)="handleCellClick(currentDate.getFullYear(), currentDate.getMonth(), day)">
                 <div class="date">{{ day }}</div>
                 <div class="reservations" *ngIf="day != null">
-                    <div *ngFor="let rezervacija of getReservationsForDate(currentDate.getFullYear(), currentDate.getMonth(), day)"
+                    <!-- <div *ngFor="let rezervacija of getReservationsForDate(currentDate.getFullYear(), currentDate.getMonth(), day)"
                     [ngClass]="{
                         'accepted-reservation': rezervacija.status?.status === 'prihvacen',
                         'waiting-reservation': rezervacija.status?.status === 'cekanje',
                         'rejected-reservation': rezervacija.status?.status === 'odbijen'}">
                         {{ rezervacija.predmet?.predmet }} ({{rezervacija.sala?.sala}})
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </td>
     </tr>
 </table>
-
-
-<button (click)="logout()">Logout</button>
-
-<!-- <app-rezervacije-lista class="overlay" *ngIf="prikaz === true" [datum]="selectedDate" [rezervacije]="rezervacijeDan" [lista]="true"></app-rezervacije-lista> -->
-
-
-
-
-
-
-
-
-
-

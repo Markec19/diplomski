@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit{
       ).then(response => {
         this.axiosService.setAuthToken(response.data.token);
         localStorage.setItem("username", username);
-        this.router.navigate(['/kalendar']);
+        this.router.navigate(['/pocetna']);
       })
       .catch(error => {
         console.error("Login failed:", error);

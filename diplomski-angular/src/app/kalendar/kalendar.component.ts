@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AxiosService } from '../service/axios.service';
 
 
+
 @Component({
   selector: 'app-kalendar',
   templateUrl: './kalendar.component.html',
@@ -17,9 +18,7 @@ export class KalendarComponent implements OnInit{
   weeks: (number | null)[][] = [];
   rezervacije: Rezervacija[] = [];
 
-  rezervacijeDan: Rezervacija[] = [];
-  prikaz: boolean = false;
-  
+  // rezervacijeDan: Rezervacija[] = [];  
 
   constructor(private axiosService: AxiosService, private route: ActivatedRoute, private router: Router) {
     let token = this.axiosService.getAuthToken()
@@ -42,6 +41,8 @@ export class KalendarComponent implements OnInit{
       ).then(
         (response) => this.rezervacije = this.vratiRezervacije(response.data)
       )
+
+      localStorage.removeItem('datum');
   }
 
   generateCalendar() {
@@ -106,22 +107,12 @@ export class KalendarComponent implements OnInit{
   }
 
   handleCellClick(year: number, month: number, day: number) {
-    // console.log(`Clicked on date: ${year}-${month + 1}-${day}`);
-    // this.selectedDate = new Date(year, month, day);    
-    // this.prikaz = true;
-    // this.rezervacijeDan = this.getReservationsForDate(year, month, day);
-
+    this.selectedDate = new Date(year, month, day)
     localStorage.setItem("datum", this.selectedDate + "");
     this.router.navigate(['/sale']);
   }
 
   vratiRezervacije(response: any): Rezervacija[] {
     return response.map((item: any) => new Rezervacija(item));
-  }
-
-  logout() {
-    this.axiosService.logout();
-  }
-
-  
+  }  
 }

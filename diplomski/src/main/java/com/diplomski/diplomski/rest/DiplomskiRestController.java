@@ -6,6 +6,7 @@ import com.diplomski.diplomski.dto.ProfilDto;
 import com.diplomski.diplomski.dto.RezervacijaDto;
 import com.diplomski.diplomski.entity.*;
 import com.diplomski.diplomski.service.EntityService;
+import com.diplomski.diplomski.service.NotifikacijaService;
 import com.diplomski.diplomski.service.ProfilService;
 import com.diplomski.diplomski.service.RezervacijaService;
 import com.diplomski.diplomski.service.impl.*;
@@ -25,6 +26,7 @@ public class DiplomskiRestController {
     private ProfilService profilService;
     private EntityService tipRezervacijeService;
     private EntityService podtipRezervacijeService;
+    private NotifikacijaService notifikacijaService;
     private RezervacijaService rezervacijaService;
     private final UserAuthProvider userAuthenticationProvider;
 
@@ -41,6 +43,7 @@ public class DiplomskiRestController {
                                    ProfilServiceImpl profilService,
                                    TipRezervacijeServiceImpl tipRezervacijeService,
                                    PodtipRezervacijeServiceImpl podtipRezervacijeService,
+                                   NotifikacijaServiceImpl notifikacijaService,
                                    RezervacijaServiceImpl rezervacijaService,
                                    UserAuthProvider userAuthenticationProvider) {
         this.rolaService = rolaService;
@@ -52,6 +55,7 @@ public class DiplomskiRestController {
         this.profilService = profilService;
         this.tipRezervacijeService = tipRezervacijeService;
         this.podtipRezervacijeService = podtipRezervacijeService;
+        this.notifikacijaService = notifikacijaService;
         this.rezervacijaService = rezervacijaService;
         this.userAuthenticationProvider = userAuthenticationProvider;
     }
@@ -127,13 +131,40 @@ public class DiplomskiRestController {
         System.out.println("Objekat je sacuvan");
 
         Rezervacija rez = rezervacijaService.dodajRezervaciju(rezervacija);
+
+        sacuvajNovuNotifikaciju(rez);
+
         return rez;
     }
 
     @PutMapping("/obradi/rezervacija")
     public Rezervacija obradiRezervaciju(@RequestBody RezervacijaDto rezervacija) throws Exception {
         Rezervacija rez = rezervacijaService.obradiRezervaciju(rezervacija);
+
+        sacuvajNotifikacijuObrada(rez);
+
         return rez;
+    }
+
+    @PostMapping("/notifikacija")
+    public List<Notifikacija> vratiNotifikacije(@RequestBody CredentialsDto credentialsDto) {
+        List<Notifikacija> notifikacije = notifikacijaService.vratiSveNotifikacije(credentialsDto.username());
+        return notifikacije;
+    }
+
+    private void sacuvajNovuNotifikaciju(Rezervacija rez) throws Exception {
+        Notifikacija notifikacija = new Notifikacija();
+        notifikacija.setRezervacija(rez);
+        notifikacija.setNotifikacija("Kreirana je nova rezervacija za dan: " + rez.getDatumRezervacije() + " u sali: " + rez.getSala().getSala());
+
+        notifikacijaService.sacuvajNotifikaciju(notifikacija);
+    }
+
+    private void sacuvajNotifikacijuObrada(Rezervacija rez) throws Exception {
+        Notifikacija notifikacija = notifikacijaService.findById(rez.getNotifikacija().getNotifikacijaId());
+        notifikacija.setNotifikacija("Rezervacija je : " + rez.getStatus().getStatus());
+
+        notifikacijaService.sacuvajNotifikaciju(notifikacija);
     }
 
 }

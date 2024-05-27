@@ -1,4 +1,6 @@
-<div>
+<app-meni></app-meni>
+
+  <div>
     <table>
       <thead>
         <tr>
@@ -10,9 +12,13 @@
         <tr *ngFor="let sala of sale">
           <td>{{ sala.sala }}</td>
           <ng-container *ngFor="let time of timeSlots">
-            <td *ngIf="!isCellCovered(sala, time)" [attr.colspan]="getColSpan(sala, time)" (click)="onCellClick(sala, time)" class="time-cell">
-              <div *ngIf="getReservationForCell(sala, time) as reservation" class="reservation" [ngClass]="reservation.status">
-                {{ reservation.predmet?.predmet }}
+            <td *ngIf="!isCellCovered(sala, time)" [attr.colspan]="getColSpan(sala, time)" (click)="onCellClick(sala, time)" 
+            [class.disabled]="(isCellReserved(sala, time) && !isAdmin()) || (!isCellReserved(sala, time) && isAdmin())" class="time-cell">
+              <div *ngIf="getReservationForCell(sala, time) as rezervacija" class="reservation"   [ngClass]="{
+                'accepted-reservation': rezervacija.status?.status === 'prihvacena',
+                'waiting-reservation': rezervacija.status?.status === 'cekanje',
+                'rejected-reservation': rezervacija.status?.status === 'odbijena'}">
+                {{ rezervacija.predmet?.predmet }}
               </div>
             </td>
           </ng-container>
@@ -21,12 +27,7 @@
     </table>
   </div>
   
-  <!-- <app-rezervacija *ngIf="dodaj" [date]="datum" [rezervacije]="rezervacije"></app-rezervacija> -->
-  <app-rezervacija *ngIf="izabranaCelija" [sala]="izabranaCelija.sala" [vremePocetka]="izabranaCelija.vreme" (formClose)="closeForm()"></app-rezervacija>
-  
-  
-  
-  
-  
+  <app-rezervacija *ngIf="izabranaCelija && !isAdmin()" [sala]="izabranaCelija.sala" [vremePocetka]="izabranaCelija.vreme" (formClose)="closeForm()"></app-rezervacija>
+  <app-rezervacije-lista class="overlay" *ngIf="izabranaCelija && isAdmin()" [rezervacija]="izabranaRezervacija" [rola]="rola"></app-rezervacije-lista>
   
   

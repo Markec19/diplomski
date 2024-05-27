@@ -12,15 +12,10 @@ import { Rola } from '../models/rola';
 })
 export class RezervacijeListaComponent implements OnInit{
 
- 
-  @Input() rezervacije!: Rezervacija[];
-  @Input() datum!: Date;
-  rezervacija: Rezervacija | null = null;
-  detalji: boolean = false;
-  @Input() lista!: boolean;
+  @Input() rezervacija!: Rezervacija | null;
   dodaj: boolean = false;
   statusi: Status[] = [];
-  rola: Rola | null = null;
+  @Input() rola: Rola | null = null;
   trenutniDatum: Date = new Date();
  
   constructor(private axiosService: AxiosService, private router: Router){}
@@ -46,20 +41,12 @@ export class RezervacijeListaComponent implements OnInit{
   }
 
   zatvoriProzor() {
-    this.lista = false;
     window.location.reload();
   }
 
   
   detaljiRezervacije(rezervacija: Rezervacija){
     this.rezervacija = rezervacija;
-    this.lista = false;
-    this.detalji = true;
-  }
-
-  zatvoriDetalje(){
-    this.lista = true;
-    this.detalji = false;
   }
 
   proveriDatum(): boolean{
@@ -73,8 +60,6 @@ export class RezervacijeListaComponent implements OnInit{
   }
 
   dodajRezervaciju() {
-    this.lista = false;
-    this.detalji = false;
     this.dodaj = true;
   }
 
@@ -105,18 +90,6 @@ export class RezervacijeListaComponent implements OnInit{
         this.router.navigate(['/kalendar']);
       })
     }
-
-    this.lista = true;
-    this.detalji = false;
   }
-
-  nijeRanije(): boolean {
-    const trenutniDatum: Date = new Date();
-    if(this.datum > trenutniDatum)
-      return true;
-    return false;
-  }
-
-
 
 }

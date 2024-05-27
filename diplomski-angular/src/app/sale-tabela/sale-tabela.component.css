@@ -1,31 +1,31 @@
 table {
     width: 100%;
     border-collapse: collapse;
-  }
-  
-  th, td {
+}
+
+th, td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: center;
     vertical-align: top;
     width: 100px;
-  }
-  
-  th {
+}
+
+th {
     background-color: #f4f4f4;
-  }
-  
-  td {
+}
+
+td {
     position: relative;
     height: 50px;
-  }
-  
-  td:hover {
+}
+
+td:hover {
     cursor: pointer;
     background-color: #f1f1f1;
-  }
-  
-  .reservation {
+}
+
+.reservation {
     text-align: center;
     height: 100%;
     width: 100%;
@@ -40,31 +40,45 @@ table {
     left: 0;
     right: 0;
     bottom: 0;
-  }
-  
-  .reservation.pending {
+}
+
+.reservation.pending {
     background-color: #ffcc00;
     border: 1px solid #cc9900;
     color: #000;
-  }
-  
-  .reservation.accepted {
+}
+
+.reservation.accepted {
     background-color: #4CAF50;
     border: 1px solid #388E3C;
     color: #fff;
-  }
-  
-  .reservation.rejected {
+}
+
+.reservation.rejected {
     background-color: #F44336;
     border: 1px solid #D32F2F;
     color: #fff;
-  }
-  
-  .time-cell {
+}
+
+.time-cell {
     position: relative;
+}
+
+.time-cell.disabled {
+    pointer-events: none;
+}
+
+.accepted-reservation {
+    background-color: lightgreen;
+    margin-bottom: 0.3em;
   }
-  
-  
-  
-  
-  
+
+  .waiting-reservation {
+    background-color: #fddf49;
+    margin-bottom: 0.3em; 
+  }
+
+  .rejected-reservation {
+    background-color: lightcoral;
+    margin-bottom: 0.3em; 
+  }

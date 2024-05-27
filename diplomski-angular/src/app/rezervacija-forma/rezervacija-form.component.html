@@ -1,108 +1,3 @@
- <!-- <div class="error" *ngIf="saveUnsuccessful">
-    Sva polja moraju biti popunjena!
-</div>
-
-<div class="error" *ngIf="saveError">
-    Rezervacije u izabranom terminu već postoje!
-</div>
-
-<div class="error" *ngIf="saveNeispravnoVreme">
-    Vreme završetka ne sme biti pre vremena početka!
-</div> 
-
-<div class="rezervacija">
-    <div class="title">Rezervacija</div>
-    <div class="rezervacija-form">
-        <form [formGroup]="rezervacijaForm" (ngSubmit)="onSubmit()">  
-            
-            <div class="dropdown">
-                <select formControlName="tipRezervacije" (change)="onTipRezervacijeChange($event)">
-                    <option value="" disabled selected>Izaberite Tip Rezervacije</option>
-                    <option *ngFor="let tip of tipRezervacije" [value]="tip.tipRezervacijeId">
-                        {{ tip.tip }}
-                    </option>
-                </select>
-            </div>
-
-            <div class="dropdown">
-                <select formControlName="podtipRezervacije" [(ngModel)]="izabraniPodtipId" [disabled]="!izabraniTipId">
-                    <option value="" disabled selected *ngIf="!izabraniTipId">Izaberite Podtip Rezervacije</option>
-                    <option *ngFor="let podtip of filteredPodtipRezervacije" [value]="podtip.podtipId">
-                        {{ podtip.podtip }}
-                    </option>
-                </select>
-            </div>
-
-           <div *ngIf="toggleTipRez === true">
-            <div class="dropdown">
-                <label>Predmet:</label>
-                <select formControlName="predmet" [(ngModel)]="izabraniPredmetId">
-                    <option *ngFor="let predmet of predmeti" [value]="predmet.predmetId">
-                        {{ predmet.predmet }}
-                    </option>
-                </select>
-            </div>
-
-            <div class="dropdown">
-                <label (click)="toggleTipSale()">Tip Sale:</label>
-                <select formControlName="tipSale" (change)="onTipSaleChange($event)" *ngIf="toggleTip" >
-                    <option *ngFor="let tip of tipSale" [value]="tip.tipSaleId">
-                        {{ tip.tip }}
-                    </option>
-                </select>
-            </div>
-
-            <div class="dropdown">
-                <div id="list1" class="dropdown-check-list" [class.open]="dropdown">
-                    <span class="anchor" (click)="toggleDropdown($event)">Izaberite Salu</span>
-                    <ul class="items" *ngIf="true">
-                        <div *ngIf="!izabraniTipSale">
-                            <li *ngFor="let item of izabraneSale">
-                                <label>
-                                    <input type="checkbox" formControlName="izabraneSale" [(ngModel)]="item.checked" (change)="onChange(item)"> {{ item.sala.sala }}
-                                </label>
-                            </li>
-                        </div>
-                        <div *ngIf="izabraniTipSale">
-                            <li *ngFor="let item of sale">
-                                <label>
-                                    <input type="checkbox" formControlName="izabraneSale" [(ngModel)]="item.checked" (change)="onChange(item)"> {{ item.sala.sala }}
-                                </label>
-                            </li>
-                        </div>
-                    </ul>
-                </div>
-            </div>
-           </div>
-
-            <div id="vremePocetka" class="input">
-                <label>Vreme Početka: </label>
-                <timepicker [(ngModel)]="vremePocetka" formControlName="vremePocetka" [showMeridian]="false" [min]="minTimePocetak" [max]="maxTime"></timepicker>
-            </div>
-
-            <div id="vremeZavrsetka" class="input">
-                <label>Vreme Završetka: </label>
-                <timepicker [(ngModel)]="vremeZavrsetka" formControlName="vremeZavrsetka" [showMeridian]="false" [min]="minTimeZavrsetak" [max]="maxTime"></timepicker>
-            </div>
-
-            <div class="button">
-                <div class="buttonPotvrdi">
-                    <button type="submit">Potvrdi</button>
-                </div>
-                <div class="buttonZatvori">
-                    <button (click)="zatvoriFormu()" type="button">Zatvori</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div> -->
-
-
-
-
-
-
-
 <div class="form-container">
     <h3>Napravite rezervaciju za {{ sala.sala }} u {{ vremePocetka }}</h3>
     <form [formGroup]="rezervacijaForm" (ngSubmit)="onSubmit()">
@@ -117,91 +12,38 @@
             </select>
         </div>
 
-        <div>
-            <select formControlName="podtipRezervacije" [(ngModel)]="izabraniPodtipId" [disabled]="!izabraniTipId">
-                <option value="" disabled selected *ngIf="!izabraniTipId">Izaberite Podtip Rezervacije</option>
-                <option *ngFor="let podtip of filtriraniPodtipRezervacije" [value]="podtip.podtipId">
-                    {{ podtip.podtip }}
-                </option>
+        <div *ngIf="izabraniTipId !== 0 && izabraniTipId !== 3">
+            <div>
+                <label>Podtip rezervacije: </label>
+                <select formControlName="podtipRezervacije" [(ngModel)]="izabraniPodtipId" [disabled]="!izabraniTipId">
+                    <option value="" disabled selected *ngIf="!izabraniTipId">Izaberite Podtip Rezervacije</option>
+                    <option *ngFor="let podtip of filtriraniPodtipRezervacije" [value]="podtip.podtipId">
+                        {{ podtip.podtip }}
+                    </option>
+                </select>
+            </div>
+    
+            <div class="dropdown">
+                <label>Predmet:</label>
+                <select formControlName="predmet" [(ngModel)]="izabraniPredmetId">
+                    <option *ngFor="let predmet of predmeti" [value]="predmet.predmetId">
+                        {{ predmet.predmet }}
+                    </option>
+                </select>
+            </div>
+    
+    
+    
+          <div>
+            <label for="vremeZavrsetka">Vreme završetka:</label>
+            <select formControlName="vremeZavrsetka" [(ngModel)]="vremeZavrsetka" name="vremeZavrsetka" required>
+              <option *ngFor="let time of timeSlots" [value]="time" [disabled]="time <= vremePocetka">{{ time }}</option>
             </select>
+          </div>
         </div>
-
-        <div class="dropdown">
-            <label>Predmet:</label>
-            <select formControlName="predmet" [(ngModel)]="izabraniPredmetId">
-                <option *ngFor="let predmet of predmeti" [value]="predmet.predmetId">
-                    {{ predmet.predmet }}
-                </option>
-            </select>
-        </div>
-
-
-
-      <div>
-        <label for="vremeZavrsetka">Vreme završetka:</label>
-        <select formControlName="vremeZavrsetka" [(ngModel)]="vremeZavrsetka" name="vremeZavrsetka" required>
-          <option *ngFor="let time of timeSlots" [value]="time" [disabled]="time <= vremePocetka">{{ time }}</option>
-        </select>
-      </div>
       <div>
         <button type="submit">Rezerviši</button>
         <button type="button" (click)="onCancel()">Otkaži</button>
       </div> 
     </form>
   </div>
-
-
-
-
-
-
-
-
-<!-- <div class="form-container">
-    <h3>Napravite rezervaciju za {{ sala.sala }} u {{ vremePocetka }}</h3>
-    <form [formGroup]="rezervacijaForm" (ngSubmit)="onSubmit()">
-
-
-        <div>
-            <label for="tipRezervacije">Tip rezervacije:</label>
-            <select id="tipRezervacije" (change)="onTipRezervacijeChange($event)">
-                <option value="" disabled selected>Izaberite Tip Rezervacije</option>
-                <option *ngFor="let tip of tipRezervacije" [value]="tip.tipRezervacijeId">
-                    {{ tip.tip }}
-                </option>
-            </select>
-          </div>
-
-       <div>
-            <label for="podtip">Podtip rezervacije:</label>
-            <select id="podtip" [(ngModel)]="izabraniPodtipId">
-                <option *ngFor="let podtip of filtriraniPodtipRezervacije" [value]="podtip.podtipId">
-                    {{ podtip.podtip }}
-                </option>
-            </select>
-      </div>
-
-        <div>
-            <label for="predmet">Naziv predmeta:</label>
-            <select id="predmet" [(ngModel)]="izabraniPredmetId" [ngModelOptions]="{standalone: true}">
-                <option *ngFor="let predmet of predmeti" [value]="predmet.predmetId">
-                    {{ predmet.predmet }}
-                </option>
-            </select>
-        </div>
-
-
-
-      <div>
-        <label for="vremeZavrsetka">Vreme završetka:</label>
-        <select id="vremeZavrsetka" [(ngModel)]="vremeZavrsetka" name="vremeZavrsetka" required>
-          <option *ngFor="let time of timeSlots" [value]="time" [disabled]="time <= vremePocetka">{{ time }}</option>
-        </select>
-      </div>
-      <div>
-        <button type="submit">Rezerviši</button>
-        <button type="button" (click)="onCancel()">Otkaži</button>
-      </div>
-    </form>
-  </div> -->
-  

@@ -2,6 +2,7 @@ package com.diplomski.diplomski.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
@@ -68,6 +69,10 @@ public class Rezervacija {
     @JoinColumn(name = "sala_id")
     //@JsonBackReference
     private Sala sala;
+
+    @OneToOne(mappedBy = "rezervacija", cascade = CascadeType.MERGE)
+    @JsonIgnore
+    private Notifikacija notifikacija;
 
     public Rezervacija() {
     }
@@ -205,5 +210,13 @@ public class Rezervacija {
 
     public void setSala(Sala sala) {
         this.sala = sala;
+    }
+
+    public Notifikacija getNotifikacija() {
+        return notifikacija;
+    }
+
+    public void setNotifikacija(Notifikacija notifikacija) {
+        this.notifikacija = notifikacija;
     }
 }

@@ -11,8 +11,8 @@ import { RezervacijeListaComponent } from './rezervacije-lista/rezervacije-lista
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
-import { SaleComponent } from './sale/sale.component';
 import { SaleTabelaComponent } from './sale-tabela/sale-tabela.component';
+import { MeniComponent } from './meni/meni.component';
 
 @NgModule({
   declarations: [
@@ -21,8 +21,8 @@ import { SaleTabelaComponent } from './sale-tabela/sale-tabela.component';
     KalendarComponent,
     RezervacijaFormComponent,
     RezervacijeListaComponent,
-    SaleComponent,
     SaleTabelaComponent,
+    MeniComponent,
   ],
   imports: [
     BrowserModule,

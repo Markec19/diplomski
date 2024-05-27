@@ -1,25 +1,26 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { Rezervacija } from '../models/rezervacija';
 import { Sala } from '../models/sala';
 import { AxiosService } from '../service/axios.service';
+import { Rola } from '../models/rola';
 
 @Component({
   selector: 'app-sale-tabela',
   templateUrl: './sale-tabela.component.html',
-  styleUrl: './sale-tabela.component.css'
+  styleUrls: ['./sale-tabela.component.css']
 })
 export class SaleTabelaComponent {
-
-  datum!: Date;
+  datum: Date = new Date();
   sale: Sala[] = [];
   timeSlots: string[] = [];
   rezervacije: Rezervacija[] = [];
   izabranaCelija: { sala: Sala, vreme: string } | null = null;
+  rola: Rola | null = null;
+  izabranaRezervacija: Rezervacija | null = null;
 
   constructor(private axiosService: AxiosService) { }
 
   ngOnInit(): void {
-
     let datum = localStorage.getItem('datum');
     if(datum !== null){
       this.datum = new Date(datum);
@@ -41,6 +42,18 @@ export class SaleTabelaComponent {
     ).then(
       (response) => this.sale = this.vratiSale(response.data),
     )
+
+    let username = localStorage.getItem("username");
+
+    this.axiosService.request(
+      "POST",
+      "/profil/rola",
+      {
+        username
+      }
+    ).then(
+      (response) => this.rola = response.data,
+    )
   }
 
   generateTimeSlots(): void {
@@ -56,7 +69,10 @@ export class SaleTabelaComponent {
   }
 
   onCellClick(sala: Sala, vreme: string): void {
-    this.izabranaCelija = { sala, vreme };
+    if ((!this.isCellReserved(sala, vreme) && !this.isAdmin()) || (this.isCellReserved(sala, vreme) && this.isAdmin())) {
+      this.izabranaCelija = { sala, vreme };
+      this.izabranaRezervacija = this.getReservationForCell(sala, vreme);
+    }
   }
 
   closeForm(): void {
@@ -64,8 +80,8 @@ export class SaleTabelaComponent {
     this.rezervacije = this.axiosService.getReservations();
   }
 
-  getReservationForCell(sala: Sala, time: string): Rezervacija | null {
-    const targetTime = new Date(`1970-01-01T${time}:00`);
+  getReservationForCell(sala: Sala, vreme: string): Rezervacija | null {
+    const targetTime = new Date(`1970-01-01T${vreme}:00`);
     return this.rezervacije.find(rezervacija => {
       if (rezervacija.sala?.salaId !== sala.salaId) {
         return false;
@@ -76,8 +92,8 @@ export class SaleTabelaComponent {
     }) || null;
   }
 
-  isCellCovered(sala: Sala, time: string): boolean {
-    const targetTime = new Date(`1970-01-01T${time}:00`);
+  isCellCovered(sala: Sala, vreme: string): boolean {
+    const targetTime = new Date(`1970-01-01T${vreme}:00`);
     return this.rezervacije.some(rezervacija => {
       if (rezervacija.sala?.salaId !== sala.salaId) {
         return false;
@@ -88,14 +104,18 @@ export class SaleTabelaComponent {
     });
   }
 
-  getColSpan(sala: Sala, time: string): number {
-    const rezervacija = this.getReservationForCell(sala, time);
+  isCellReserved(sala: Sala, vreme: string): boolean {
+    return !!this.getReservationForCell(sala, vreme);
+  }
+
+  getColSpan(sala: Sala, vreme: string): number {
+    const rezervacija = this.getReservationForCell(sala, vreme);
     if (!rezervacija) {
       return 1;
     }
     const startTime = new Date(`1970-01-01T${rezervacija.vremePocetka}:00`);
     const endTime = new Date(`1970-01-01T${rezervacija.vremeZavrsetka}:00`);
-    const interval = 15 * 60 * 1000; // 15 minutes in milliseconds
+    const interval = 15 * 60 * 1000;
     return Math.ceil((endTime.getTime() - startTime.getTime()) / interval);
   }
 
@@ -112,9 +132,11 @@ export class SaleTabelaComponent {
     return this.getReservationsForDate(rezervacije, this.datum)
   }
 
-  
   vratiSale(response: any):Sala[] {
     return response.map((item: any) => new Sala(item));
   }
 
+  isAdmin(): boolean{
+    return this.rola?.rola === "admin";
+  }
 }

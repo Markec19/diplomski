@@ -9,7 +9,7 @@ import { Rezervacija } from '../models/rezervacija';
 export class AxiosService {
 
 
-  private reservations: Rezervacija[] = [];
+  private rezervacije: Rezervacija[] = [];
 
   constructor(private router: Router) {
     axios.defaults.baseURL="http://localhost:8080"
@@ -49,10 +49,11 @@ export class AxiosService {
    logout(): void {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('username');
+    localStorage.removeItem('datum')
     this.router.navigate(['/login']);
   }
 
   getReservations(): Rezervacija[] {
-    return this.reservations;
+    return this.rezervacije;
   }
 }

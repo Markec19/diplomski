@@ -2,7 +2,6 @@ package com.diplomski.diplomski.service.impl;
 
 import com.diplomski.diplomski.dao.PodtipRezervacijeRepository;
 import com.diplomski.diplomski.entity.PodtipRezervacije;
-import com.diplomski.diplomski.entity.Rola;
 import com.diplomski.diplomski.service.EntityService;
 import org.springframework.stereotype.Service;
 

@@ -10,7 +10,7 @@ export class Rezervacija {
     vremeZavrsetka: string = "";
     datumRezervacije: Date = new Date();
     datumSlanjaZahteva: Date = new Date();
-    datumObrade: Date | null= null;    
+    datumObrade: Date | null= null;   
     profil: Profil | null = null;
     admin: Profil | null = null;
     predmet: Predmet | null = null;    

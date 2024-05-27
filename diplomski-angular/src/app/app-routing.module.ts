@@ -4,15 +4,13 @@ import { LoginComponent } from './login/login.component';
 import { KalendarComponent } from './kalendar/kalendar.component';
 import { AuthGuard } from './service/authguard';
 import { RezervacijeListaComponent } from './rezervacije-lista/rezervacije-lista.component';
-import { SaleComponent } from './sale/sale.component';
 import { SaleTabelaComponent } from './sale-tabela/sale-tabela.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
-  {path: 'kalendar', component: KalendarComponent, canActivate: [AuthGuard] },
+  {path: 'pocetna', component: KalendarComponent, canActivate: [AuthGuard] },
   {path: 'lista', component: RezervacijeListaComponent, canActivate: [AuthGuard] },
-  // {path: 'sale', component: SaleComponent, canActivate: [AuthGuard] },
   {path: 'sale', component: SaleTabelaComponent, canActivate: [AuthGuard] },
 ];
 
