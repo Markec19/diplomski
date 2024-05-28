@@ -4,8 +4,13 @@
         <div class="dropdown" (click)="toggleNotifications()">
           <a>Obaveštenja</a>
           <div class="dropdown-content" *ngIf="showNotifications">
-            <ul class="notification-list">
+            <!-- <ul class="notification-list">
               <li *ngFor="let notifikacija of notifikacije">{{ notifikacija.notifikacija }}</li>
+            </ul> -->
+            <ul class="notification-list">
+              <li *ngFor="let notifikacija of notifikacije" (click)="odvediDoRezervacije(notifikacija)">
+                {{ notifikacija.notifikacija }}
+              </li>
             </ul>
           </div>
         </div>
@@ -13,6 +18,7 @@
       <div class="right-links">
         <a (click)="otvoriPocetnu()">Početna</a>
         <a (click)="otvoriRezervacije()">Rezervacije</a>
+        <!-- <a (click)="logout()">Logout <img src="/assets/logout.png" alt=""></a> -->
         <a (click)="logout()">Logout</a>
       </div>
     </nav>

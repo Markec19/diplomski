@@ -41,6 +41,26 @@
             </select>
           </div>
         </div>
+
+        
+
+
+
+
+
+
+        <div *ngIf="izabraniTipId === 3">
+          <div class="input">
+            <input type="text" formControlName="dogadjaj" placeholder="dogadjaj" id="dogadjaj">
+        </div>
+
+        <div>
+          <label for="vremeZavrsetka">Vreme završetka:</label>
+          <select formControlName="vremeZavrsetka" [(ngModel)]="vremeZavrsetka" name="vremeZavrsetka" required>
+            <option *ngFor="let time of timeSlots" [value]="time" [disabled]="time <= vremePocetka">{{ time }}</option>
+          </select>
+        </div>
+      </div>
       <div>
         <button type="submit">Rezerviši</button>
         <button type="button" (click)="onCancel()">Otkaži</button>

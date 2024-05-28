@@ -155,7 +155,7 @@ public class DiplomskiRestController {
     private void sacuvajNovuNotifikaciju(Rezervacija rez) throws Exception {
         Notifikacija notifikacija = new Notifikacija();
         notifikacija.setRezervacija(rez);
-        notifikacija.setNotifikacija("Kreirana je nova rezervacija za dan: " + rez.getDatumRezervacije() + " u sali: " + rez.getSala().getSala());
+        notifikacija.setNotifikacija("Kreirana je nova rezervacija za dan: " + rez.getDatumRezervacije() + ", u sali: " + rez.getSala().getSala());
 
         notifikacijaService.sacuvajNotifikaciju(notifikacija);
     }

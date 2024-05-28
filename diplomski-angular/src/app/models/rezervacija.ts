@@ -10,7 +10,8 @@ export class Rezervacija {
     vremeZavrsetka: string = "";
     datumRezervacije: Date = new Date();
     datumSlanjaZahteva: Date = new Date();
-    datumObrade: Date | null= null;   
+    datumObrade: Date | null= null;
+    dogadjaj: string | null = null;   
     profil: Profil | null = null;
     admin: Profil | null = null;
     predmet: Predmet | null = null;    
@@ -25,7 +26,8 @@ export class Rezervacija {
             this.vremeZavrsetka = data.vremeZavrsetka;
             this.datumRezervacije = new Date(data.datumRezervacije)
             this.datumSlanjaZahteva = new Date(data.datumSlanjaZahteva);
-            this.datumObrade = new Date(data.datumObrade);       
+            this.datumObrade = new Date(data.datumObrade);
+            this.dogadjaj = data.dogadjaj;       
             
             if (data.profil) {
                 this.profil = new Profil(data.profil);

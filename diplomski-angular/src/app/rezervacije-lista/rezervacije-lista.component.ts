@@ -41,7 +41,7 @@ export class RezervacijeListaComponent implements OnInit{
   }
 
   zatvoriProzor() {
-    window.location.reload();
+    location.reload();
   }
 
   
@@ -57,10 +57,6 @@ export class RezervacijeListaComponent implements OnInit{
       }
     }    
     return false;
-  }
-
-  dodajRezervaciju() {
-    this.dodaj = true;
   }
 
   vratiStatuse(response: any): Status[] {

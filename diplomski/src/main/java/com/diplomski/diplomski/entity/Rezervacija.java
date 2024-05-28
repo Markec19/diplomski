@@ -35,6 +35,9 @@ public class Rezervacija {
     @Column(name = "datum_obrade")
     private Date datumObrade;
 
+    @Column(name = "dogadjaj")
+    private String dogadjaj;
+
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "korisnik_id")
     //@JsonBackReference
@@ -78,13 +81,14 @@ public class Rezervacija {
     }
 
 
-    public Rezervacija(String vremePocetka, String vremeZavrsetka, Date datumRezervacije, Date datumSlanjaZahteva, Date datumObrade, Profil profil, Profil admin,
-                       Predmet predmet, Status status, PodtipRezervacije podtipRezervacije, Sala sala) {
+    public Rezervacija(String vremePocetka, String vremeZavrsetka, Date datumRezervacije, Date datumSlanjaZahteva, Date datumObrade, String dogadjaj,
+                       Profil profil, Profil admin, Predmet predmet, Status status, PodtipRezervacije podtipRezervacije, Sala sala) {
         this.vremePocetka = vremePocetka;
         this.vremeZavrsetka = vremeZavrsetka;
         this.datumRezervacije = datumRezervacije;
         this.datumSlanjaZahteva = datumSlanjaZahteva;
         this.datumObrade = datumObrade;
+        this.dogadjaj = dogadjaj;
         this.profil = profil;
         this.admin = admin;
         this.predmet = predmet;
@@ -93,13 +97,15 @@ public class Rezervacija {
         this.sala = sala;
     }
 
-    public Rezervacija(int rezervacijaId, String vremePocetka, String vremeZavrsetka, Date datumRezervacije, Date datumSlanjaZahteva,
-                       Profil profil, Profil admin, Predmet predmet, Status status, PodtipRezervacije podtipRezervacije, Sala sala) {
+    public Rezervacija(int rezervacijaId, String vremePocetka, String vremeZavrsetka, Date datumRezervacije, Date datumSlanjaZahteva, Date datumObrade,
+                       String dogadjaj, Profil profil, Profil admin, Predmet predmet, Status status, PodtipRezervacije podtipRezervacije, Sala sala) {
         this.rezervacijaId = rezervacijaId;
         this.vremePocetka = vremePocetka;
         this.vremeZavrsetka = vremeZavrsetka;
         this.datumRezervacije = datumRezervacije;
         this.datumSlanjaZahteva = datumSlanjaZahteva;
+        this.datumObrade = datumObrade;
+        this.dogadjaj = dogadjaj;
         this.profil = profil;
         this.admin = admin;
         this.predmet = predmet;
@@ -154,6 +160,14 @@ public class Rezervacija {
 
     public void setDatumObrade(Date datumObrade) {
         this.datumObrade = datumObrade;
+    }
+
+    public String getDogadjaj() {
+        return dogadjaj;
+    }
+
+    public void setDogadjaj(String dogadjaj) {
+        this.dogadjaj = dogadjaj;
     }
 
     public Profil getProfil() {

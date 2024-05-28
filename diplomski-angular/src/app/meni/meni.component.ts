@@ -42,4 +42,21 @@ export class MeniComponent implements OnInit {
   otvoriRezervacije() {
     this.router.navigate(['/sale']);
   }
+
+  odvediDoRezervacije(notifikacija: Notifikacija){
+
+    if(notifikacija.rezervacija){
+      let datumMilisekunde = new Date(notifikacija.rezervacija?.datumRezervacije);
+
+      let formatiranDatum = datumMilisekunde.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      });
+
+      let datum = new Date(formatiranDatum);
+      localStorage.setItem("datum", datum + "");
+      this.router.navigate(['/sale']);
+    }  
+  }
 }

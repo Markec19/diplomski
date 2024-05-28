@@ -51,6 +51,7 @@ export class RezervacijaFormComponent implements OnInit {
       vremeZavrsetka: ['', Validators.required],
       tipRezervacije: ['', Validators.required],
       podtipRezervacije: ['', Validators.required],
+      dogadjaj: [''],
     })
 
     this.generateTimeSlots();
@@ -99,13 +100,23 @@ export class RezervacijaFormComponent implements OnInit {
       return;
     }
 
-    let izabraniPredmet: Predmet | null = this.predmeti.find(predmet => predmet.predmetId == this.izabraniPredmetId) ?? null;
-    let izabraniPodtip: PodtipRezervacije | null = this.podtipRezervacije.find(podtip => podtip.podtipId == this.izabraniPodtipId) ?? null;
-
     let rezervacija: Rezervacija = new Rezervacija();
-    rezervacija.predmet = izabraniPredmet;
+
+    if(this.izabraniTipId !== 3){
+      let izabraniPredmet: Predmet | null = this.predmeti.find(predmet => predmet.predmetId == this.izabraniPredmetId) ?? null;
+      let izabraniPodtip: PodtipRezervacije | null = this.podtipRezervacije.find(podtip => podtip.podtipId == this.izabraniPodtipId) ?? null;
+
+      rezervacija.predmet = izabraniPredmet;
+      rezervacija.podtipRezervacije = izabraniPodtip;
+    }
+
+    if(this.izabraniTipId === 3){
+      rezervacija.dogadjaj = (document.getElementById('dogadjaj') as HTMLInputElement).value;
+      rezervacija.podtipRezervacije = this.podtipRezervacije.find(podtip => podtip.tipRezervacije?.tipRezervacijeId == 3) ?? null;
+    }
+
+    
     rezervacija.sala = this.sala;
-    rezervacija.podtipRezervacije = izabraniPodtip;
     rezervacija.vremePocetka = this.vremePocetka; 
     rezervacija.vremeZavrsetka = this.vremeZavrsetka;
     rezervacija.datumSlanjaZahteva = new Date();
@@ -122,7 +133,9 @@ export class RezervacijaFormComponent implements OnInit {
         rezervacija: rezervacija,
         username: username
       }
-    )
+    ).then(response => {
+        this.router.navigate(['/kalendar']);
+      })
     this.formClose.emit();
     location.reload();
   }

@@ -16,9 +16,7 @@ export class KalendarComponent implements OnInit{
   daniUNedelji: string[] = ['Pon', 'Uto', 'Sre', 'Čet', 'Pet', 'Sub', 'Ned'];
   meseci: string[] = [];
   weeks: (number | null)[][] = [];
-  rezervacije: Rezervacija[] = [];
-
-  // rezervacijeDan: Rezervacija[] = [];  
+  rezervacije: Rezervacija[] = [];  
 
   constructor(private axiosService: AxiosService, private route: ActivatedRoute, private router: Router) {
     let token = this.axiosService.getAuthToken()
