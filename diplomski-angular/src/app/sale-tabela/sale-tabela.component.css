@@ -100,17 +100,29 @@ td:hover {
     pointer-events: none;
 }
 
-.accepted-reservation {
+.prihvacena-rezervacija {
     background-color: lightgreen;
     margin-bottom: 0.3em;
   }
 
-  .waiting-reservation {
+  .cekanje-rezervacija {
     background-color: #fddf49;
     margin-bottom: 0.3em; 
   }
 
-  .rejected-reservation {
+  .odbijena-rezervacija {
     background-color: lightcoral;
     margin-bottom: 0.3em; 
   }
+
+  .odjavljena-rezervacija {
+    background-color: beige;
+    margin-bottom: 0.3em; 
+  }
+
+  #statusFilter {
+    margin-bottom: 20px;
+    padding: 8px;
+    font-size: 16px;
+  }
+

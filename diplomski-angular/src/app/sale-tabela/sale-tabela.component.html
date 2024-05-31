@@ -2,24 +2,40 @@
   <app-meni></app-meni>
 </div>
 
+
+
   <div class="sale">
+    Rezervacije za {{datum | date:'yyyy-MM-dd'}}
+
+    <div *ngIf="isAdmin()">
+      <label for="statusFilter">Filtriraj po statusu:</label>
+      <select id="statusFilter" (change)="onStatusFilterChange($event)">
+        <option value="sve">Sve</option>
+        <option value="cekanje">Na čekanju</option>
+        <option value="prihvacena">Prihvaćeno</option>
+        <option value="odbijena">Odbijeno</option>
+        <option value="odjavljena">Odjavljeno</option>
+      </select>
+    </div>
+
     <table>
       <thead>
         <tr>
           <th>Sala/Vreme</th>
-          <th *ngFor="let time of timeSlots">{{ time }}</th>
+          <th *ngFor="let vreme of timeSlots">{{ vreme }}</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let sala of sale">
           <td>{{ sala.sala }}</td>
-          <ng-container *ngFor="let time of timeSlots">
-            <td *ngIf="!isCellCovered(sala, time)" [attr.colspan]="getColSpan(sala, time)" (click)="onCellClick(sala, time)" 
-            [class.disabled]="(isCellReserved(sala, time) && !isAdmin()) || (!isCellReserved(sala, time) && isAdmin())" class="time-cell">
-              <div *ngIf="getReservationForCell(sala, time) as rezervacija" class="reservation" [ngClass]="{
-                'accepted-reservation': rezervacija.status?.status === 'prihvacena',
-                'waiting-reservation': rezervacija.status?.status === 'cekanje',
-                'rejected-reservation': rezervacija.status?.status === 'odbijena'}">
+          <ng-container *ngFor="let vreme of timeSlots">
+            <td *ngIf="!isCellCovered(sala, vreme)" [attr.colspan]="getColSpan(sala, vreme)" (click)="onCellClick(sala, vreme)" 
+            [class.disabled]="onemoguciInterakciju(sala, vreme)" class="time-cell">
+              <div *ngIf="getReservationForCell(sala, vreme) as rezervacija" class="reservation" [ngClass]="{
+                'prihvacena-rezervacija': rezervacija.status?.status === 'prihvacena',
+                'cekanje-rezervacija': rezervacija.status?.status === 'cekanje',
+                'odbijena-rezervacija': rezervacija.status?.status === 'odbijena',
+                'odjavljena-rezervacija': rezervacija.status?.status === 'odjavljena' && isAdmin()}">
                   <div *ngIf="rezervacija.dogadjaj === null">
                     {{ rezervacija.predmet?.predmet }}
                   </div>
@@ -31,12 +47,10 @@
           </ng-container>
         </tr>
       </tbody>
-    </table>
-
+    </table>   
   </div>
-
-  <app-rezervacija *ngIf="izabranaCelija && !isAdmin()" [sala]="izabranaCelija.sala" [vremePocetka]="izabranaCelija.vreme" (formClose)="closeForm()"></app-rezervacija>
-  <app-rezervacije-lista class="overlay" *ngIf="izabranaCelija && isAdmin()" [rezervacija]="izabranaRezervacija" [rola]="rola"></app-rezervacije-lista>
+  <app-rezervacija *ngIf="izabranaCelija && !isCellReserved(izabranaCelija.sala, izabranaCelija.vreme)" [sala]="izabranaCelija.sala" [vremePocetka]="izabranaCelija.vreme" (formClose)="closeForm()"></app-rezervacija>
+  <app-rezervacije-lista class="overlay" *ngIf="izabranaCelija && isCellReserved(izabranaCelija.sala, izabranaCelija.vreme) && isAdmin()" [rezervacija]="izabranaRezervacija" [rola]="rola"></app-rezervacije-lista>
   
 
 

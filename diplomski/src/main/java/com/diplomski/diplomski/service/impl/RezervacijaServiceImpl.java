@@ -3,10 +3,7 @@ package com.diplomski.diplomski.service.impl;
 import com.diplomski.diplomski.dao.RezervacijaRepository;
 import com.diplomski.diplomski.dto.ProfilDto;
 import com.diplomski.diplomski.dto.RezervacijaDto;
-import com.diplomski.diplomski.entity.Profil;
-import com.diplomski.diplomski.entity.Rezervacija;
-import com.diplomski.diplomski.entity.Sala;
-import com.diplomski.diplomski.entity.Status;
+import com.diplomski.diplomski.entity.*;
 import com.diplomski.diplomski.service.EntityService;
 import com.diplomski.diplomski.service.ProfilService;
 import com.diplomski.diplomski.service.RezervacijaService;
@@ -14,6 +11,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +32,7 @@ public class RezervacijaServiceImpl implements RezervacijaService {
 
     @Override
     public List<Rezervacija> findAll() {
+
         return repository.findAll();
     }
 
@@ -52,12 +51,20 @@ public class RezervacijaServiceImpl implements RezervacijaService {
     @Override
     public Rezervacija dodajRezervaciju(RezervacijaDto rezervacijaDto) throws Exception {
         Rezervacija rezervacija = rezervacijaDto.getRezervacija();
-        rezervacija.setDatumObrade(null);
-        rezervacija.setStatus((Status) statusService.findById(1));
 
         ProfilDto profilDto = profilService.findByUsername(rezervacijaDto.getUsername());
         Profil profil = profilService.findById(profilDto.getProfilId());
         rezervacija.setProfil(profil);
+
+        if(profil.getRola().getRola().equals("korisnik")) {
+            rezervacija.setStatus((Status) statusService.findById(1));
+            rezervacija.setDatumObrade(null);
+        }
+        if(profil.getRola().getRola().equals("admin")) {
+            rezervacija.setStatus((Status) statusService.findById(2));
+            rezervacija.setAdmin(profil);
+            rezervacija.setDatumObrade(rezervacija.getDatumSlanjaZahteva());
+        }
 
         return repository.save(rezervacija);
     }
@@ -81,5 +88,25 @@ public class RezervacijaServiceImpl implements RezervacijaService {
         } else {
             throw new Exception("Korisnik ne moze da obradjuje rezervacije!");
         }
+    }
+
+    @Override
+    public List<Rezervacija> vratiRezervacijeKorisnika(String username) throws Exception {
+        ProfilDto profilDto = profilService.findByUsername(username);
+        Profil profil = profilService.findById(profilDto.getProfilId());
+
+        TypedQuery<Rezervacija> query = entityManager.createQuery("SELECT r FROM Rezervacija r " +
+                "WHERE r.profil = :profil", Rezervacija.class);
+        query.setParameter("profil", profil);
+
+       return query.getResultList();
+    }
+
+    @Override
+    public Rezervacija odjaviRezervaciju(RezervacijaDto rezervacijaDto) throws Exception {
+        Rezervacija rezervacija = findById(rezervacijaDto.getRezervacija().getrezervacijaId());
+        rezervacija.setStatus((Status) statusService.findById(4));
+
+        return repository.save(rezervacija);
     }
 }

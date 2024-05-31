@@ -13,6 +13,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { SaleTabelaComponent } from './sale-tabela/sale-tabela.component';
 import { MeniComponent } from './meni/meni.component';
+import { ObavestenjaComponent } from './obavestenja/obavestenja.component';
+import { MojeRezervacijeComponent } from './moje-rezervacije/moje-rezervacije.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { MeniComponent } from './meni/meni.component';
     RezervacijeListaComponent,
     SaleTabelaComponent,
     MeniComponent,
+    ObavestenjaComponent,
+    MojeRezervacijeComponent,
   ],
   imports: [
     BrowserModule,

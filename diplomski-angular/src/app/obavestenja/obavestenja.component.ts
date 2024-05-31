@@ -1,20 +1,24 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Notifikacija } from '../models/notifikacija';
 import { AxiosService } from '../service/axios.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-meni',
-  templateUrl: './meni.component.html',
-  styleUrls: ['./meni.component.css']
+  selector: 'app-obavestenja',
+  templateUrl: './obavestenja.component.html',
+  styleUrl: './obavestenja.component.css'
 })
-export class MeniComponent implements OnInit {
+export class ObavestenjaComponent  implements OnInit{
+
   notifikacije: Notifikacija[] = [];
-  showNotifications = false;
 
   constructor(private axiosService: AxiosService, private router: Router) {}
-
+  
   ngOnInit(): void {
+    this.ucitajObavestenja();
+  }
+
+  ucitajObavestenja() {
     let username = localStorage.getItem("username");
     this.axiosService.request(
       "POST",
@@ -25,30 +29,6 @@ export class MeniComponent implements OnInit {
     ).then(
       (response) => this.notifikacije = response.data
     );
-  }
-
-  toggleNotifications(): void {
-    this.showNotifications = !this.showNotifications;
-  }
-
-  logout() {
-    this.axiosService.logout();
-  }
-
-  otvoriPocetnu() {
-    this.router.navigate(['/pocetna']);
-  }
-
-  otvoriRezervacije() {
-    this.router.navigate(['/sale']);
-  }
-
-  otvoriObavestenja() {
-    this.router.navigate(['/obavestenja']);
-  }
-
-  otvoriMojeRezervacije() {
-    this.router.navigate(['/moje-rezervacije']);
   }
 
   odvediDoRezervacije(notifikacija: Notifikacija){
@@ -67,4 +47,5 @@ export class MeniComponent implements OnInit {
       this.router.navigate(['/sale']);
     }  
   }
+
 }

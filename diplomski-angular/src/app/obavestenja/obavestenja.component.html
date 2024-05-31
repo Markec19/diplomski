@@ -1,0 +1,21 @@
+<app-meni></app-meni>
+
+
+<div class="notifications-table">
+    <h2>Obaveštenja</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Datum</th>
+          <th>Obaveštenje</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let notifikacija of notifikacije" (click)="odvediDoRezervacije(notifikacija)">
+          <td>{{ notifikacija.rezervacija?.datumRezervacije| date:'yyyy-MM-dd' }}</td>
+          <td>{{ notifikacija.notifikacija }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

@@ -3,6 +3,7 @@ import { Rezervacija } from '../models/rezervacija';
 import { Sala } from '../models/sala';
 import { AxiosService } from '../service/axios.service';
 import { Rola } from '../models/rola';
+import { Status } from '../models/status';
 
 @Component({
   selector: 'app-sale-tabela',
@@ -16,7 +17,9 @@ export class SaleTabelaComponent {
   rezervacije: Rezervacija[] = [];
   izabranaCelija: { sala: Sala, vreme: string } | null = null;
   rola: Rola | null = null;
-  izabranaRezervacija: Rezervacija | null = null;
+  izabranaRezervacija: Rezervacija | null = null;  
+  izabraniStatus: string = 'sve';
+  filteredRezervacije: Rezervacija[] = [];
 
   constructor(private axiosService: AxiosService) { }
 
@@ -32,7 +35,10 @@ export class SaleTabelaComponent {
       "/rezervacije",
       {}
     ).then(
-      (response) => this.rezervacije = this.vratiRezervacije(response.data)
+      (response) => {
+        this.rezervacije = this.vratiRezervacije(response.data);
+        this.filteredRezervacije = this.rezervacije;
+      }
     )
 
     this.axiosService.request(
@@ -68,22 +74,38 @@ export class SaleTabelaComponent {
     }
   }
 
+  // onCellClick(sala: Sala, vreme: string): void {
+  //   if ((!this.isCellReserved(sala, vreme) && !this.isAdmin()) || (this.isCellReserved(sala, vreme) && this.isAdmin())) {
+  //     this.izabranaCelija = { sala, vreme };
+  //     this.izabranaRezervacija = this.getReservationForCell(sala, vreme);
+  //   }
+  // }
+
   onCellClick(sala: Sala, vreme: string): void {
-    if ((!this.isCellReserved(sala, vreme) && !this.isAdmin()) || (this.isCellReserved(sala, vreme) && this.isAdmin())) {
-      this.izabranaCelija = { sala, vreme };
+    this.izabranaCelija = { sala, vreme };
+    if (this.isCellReserved(sala, vreme)) {
       this.izabranaRezervacija = this.getReservationForCell(sala, vreme);
     }
   }
 
   closeForm(): void {
     this.izabranaCelija = null;
-    this.rezervacije = this.axiosService.getReservations();
+
+    this.axiosService.request(
+      "GET",
+      "/rezervacije",
+      {}
+    ).then(
+      (response) => this.rezervacije = this.vratiRezervacije(response.data)
+    )   
+
+    //this.rezervacije = this.axiosService.getReservations();
   }
 
   getReservationForCell(sala: Sala, vreme: string): Rezervacija | null {
     const targetTime = new Date(`1970-01-01T${vreme}:00`);
-    return this.rezervacije.find(rezervacija => {
-      if (rezervacija.sala?.salaId !== sala.salaId) {
+    return this.filteredRezervacije.find(rezervacija => {
+      if (rezervacija.sala?.salaId !== sala.salaId || (rezervacija.status?.status === 'odjavljena' && !this.isAdmin())) {
         return false;
       }
       const startTime = new Date(`1970-01-01T${rezervacija.vremePocetka}:00`);
@@ -139,4 +161,36 @@ export class SaleTabelaComponent {
   isAdmin(): boolean{
     return this.rola?.rola === "admin";
   }
+
+  // getStatus(sala: Sala, vreme: string): string | null{
+  //   let rezervacija = this.getReservationForCell(sala, vreme);
+  //   if(rezervacija?.status)
+  //     return rezervacija?.status?.status
+  //   return null;
+  // }
+
+  
+  applyFilter(): void {
+    if (this.izabraniStatus === 'sve') {
+      this.filteredRezervacije = this.rezervacije;
+    } else {
+      this.filteredRezervacije = this.rezervacije.filter(rezervacija => rezervacija.status?.status === this.izabraniStatus);
+    }
+  }
+
+  onStatusFilterChange(event: any): void {
+    this.izabraniStatus = event.target.value;
+    this.applyFilter();
+  }
+
+  onemoguciInterakciju(sala: Sala, vreme: string): boolean {
+    if(this.isCellReserved(sala, vreme) && !this.isAdmin()){
+      return true;
+    }
+    if(this.izabraniStatus !== 'sve' && !this.isCellReserved(sala, vreme)){
+      return true;
+    }
+    return false;
+  }
+
 }

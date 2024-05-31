@@ -146,6 +146,16 @@ public class DiplomskiRestController {
         return rez;
     }
 
+    @PostMapping("/rezervacije/korisnik")
+    public List<Rezervacija> vratiRezervacijeKorisnika(@RequestBody CredentialsDto credentialsDto) throws Exception {
+        return rezervacijaService.vratiRezervacijeKorisnika(credentialsDto.username());
+    }
+
+    @PutMapping("/odjavi/rezervacija")
+    public Rezervacija odjaviRezervaciju(@RequestBody RezervacijaDto rezervacija) throws Exception {
+        return rezervacijaService.odjaviRezervaciju(rezervacija);
+    }
+
     @PostMapping("/notifikacija")
     public List<Notifikacija> vratiNotifikacije(@RequestBody CredentialsDto credentialsDto) {
         List<Notifikacija> notifikacije = notifikacijaService.vratiSveNotifikacije(credentialsDto.username());

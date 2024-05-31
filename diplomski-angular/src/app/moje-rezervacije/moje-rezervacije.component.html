@@ -1,0 +1,31 @@
+<app-meni></app-meni>
+
+<div class="reservations-container">
+    <h2>Moje Rezervacije</h2>
+    <table class="reservations-table">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Datum</th>
+          <th>Sala</th>
+          <th>Vreme</th>
+          <th>Predmet/Dogadjaj</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let rezervacija of rezervacije">
+          <td>{{ rezervacija.rezervacijaId }}</td>
+          <td>{{ rezervacija.datumRezervacije | date:'yyyy-MM-dd' }}</td>
+          <td>{{ rezervacija.sala?.sala }}</td>
+          <td>({{ rezervacija.vremePocetka }} - {{ rezervacija.vremeZavrsetka }})</td>
+          <td *ngIf="rezervacija.predmet !== null">{{ rezervacija.predmet.predmet }}</td>
+          <td *ngIf="rezervacija.dogadjaj !== null">Dogadjaj: {{ rezervacija.dogadjaj }}</td>
+          <td>{{ rezervacija.status?.status }}</td>
+          <td><button class="btn btn-danger" (click)="odjaviRezervaciju(rezervacija)">Odjavi</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
