@@ -38,6 +38,8 @@ public class Profil {
     @JsonIgnore
     private List<Rezervacija> rezervacije;
 
+//    private String email = "lukam0716@gmail.com";
+
     public Profil() {
     }
 
@@ -95,4 +97,12 @@ public class Profil {
     public void setRezervacije(List<Rezervacija> rezervacije) {
         this.rezervacije = rezervacije;
     }
+
+//    public String getEmail() {
+//        return email;
+//    }
+//
+//    public void setEmail(String email) {
+//        this.email = email;
+//    }
 }

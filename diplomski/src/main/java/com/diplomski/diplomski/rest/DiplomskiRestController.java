@@ -5,14 +5,22 @@ import com.diplomski.diplomski.dto.CredentialsDto;
 import com.diplomski.diplomski.dto.ProfilDto;
 import com.diplomski.diplomski.dto.RezervacijaDto;
 import com.diplomski.diplomski.entity.*;
-import com.diplomski.diplomski.service.EntityService;
-import com.diplomski.diplomski.service.NotifikacijaService;
-import com.diplomski.diplomski.service.ProfilService;
-import com.diplomski.diplomski.service.RezervacijaService;
+import com.diplomski.diplomski.service.*;
 import com.diplomski.diplomski.service.impl.*;
+import jakarta.mail.MessagingException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 
 @RestController
 public class DiplomskiRestController {
@@ -28,6 +36,7 @@ public class DiplomskiRestController {
     private EntityService podtipRezervacijeService;
     private NotifikacijaService notifikacijaService;
     private RezervacijaService rezervacijaService;
+    private EmailSenderService emailSenderService;
     private final UserAuthProvider userAuthenticationProvider;
 
 //    @GetMapping("/hello")
@@ -36,16 +45,19 @@ public class DiplomskiRestController {
 //    }
 
 
-    public DiplomskiRestController(RolaServiceImpl rolaService, ZaposleniServiceImpl zaposleniService,
+    public DiplomskiRestController(RolaServiceImpl rolaService,
+                                   ZaposleniServiceImpl zaposleniService,
                                    TipSaleServiceImpl tipSaleService,
                                    PredmetServiceImpl predmetService,
-                                   StatusServiceImpl statusService, SalaServiceImpl salaService,
+                                   StatusServiceImpl statusService,
+                                   SalaServiceImpl salaService,
                                    ProfilServiceImpl profilService,
                                    TipRezervacijeServiceImpl tipRezervacijeService,
                                    PodtipRezervacijeServiceImpl podtipRezervacijeService,
                                    NotifikacijaServiceImpl notifikacijaService,
                                    RezervacijaServiceImpl rezervacijaService,
-                                   UserAuthProvider userAuthenticationProvider) {
+                                   UserAuthProvider userAuthenticationProvider,
+                                   EmailSenderService emailSenderService) {
         this.rolaService = rolaService;
         this.zaposleniService = zaposleniService;
         this.tipSaleService = tipSaleService;
@@ -58,6 +70,7 @@ public class DiplomskiRestController {
         this.notifikacijaService = notifikacijaService;
         this.rezervacijaService = rezervacijaService;
         this.userAuthenticationProvider = userAuthenticationProvider;
+        this.emailSenderService = emailSenderService;
     }
 
     @PostMapping("/login")
@@ -143,6 +156,15 @@ public class DiplomskiRestController {
 
         sacuvajNotifikacijuObrada(rez);
 
+        if(rez.getStatus().getStatus().equals("prihvacena")) {
+            String icsContent = emailSenderService.generateIcsContent(rez);
+            Path tempFile = Files.createTempFile("rezervacija", ".ics");
+            Files.write(tempFile, icsContent.getBytes(StandardCharsets.UTF_8));
+
+            posaljiMejl(rez, tempFile.toFile());
+            Files.delete(tempFile);
+        }
+
         return rez;
     }
 
@@ -176,5 +198,15 @@ public class DiplomskiRestController {
 
         notifikacijaService.sacuvajNotifikaciju(notifikacija);
     }
+
+    private void posaljiMejl(Rezervacija rezervacija, File file) throws MessagingException {
+        emailSenderService.sendEmailWithAttachment("markovicl136@gmail.com",
+                "Rezervacija je prihvacena.",
+                "Rezervacija",
+                file);
+
+    }
+
+
 
 }

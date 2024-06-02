@@ -47,7 +47,10 @@
           </ng-container>
         </tr>
       </tbody>
-    </table>   
+    </table>
+    <div>
+      <button (click)="vratiNizRezervacija()">Info</button>
+    </div>   
   </div>
   <app-rezervacija *ngIf="izabranaCelija && !isCellReserved(izabranaCelija.sala, izabranaCelija.vreme)" [sala]="izabranaCelija.sala" [vremePocetka]="izabranaCelija.vreme" (formClose)="closeForm()"></app-rezervacija>
   <app-rezervacije-lista class="overlay" *ngIf="izabranaCelija && isCellReserved(izabranaCelija.sala, izabranaCelija.vreme) && isAdmin()" [rezervacija]="izabranaRezervacija" [rola]="rola"></app-rezervacije-lista>

@@ -193,4 +193,8 @@ export class SaleTabelaComponent {
     return false;
   }
 
+  vratiNizRezervacija() {
+    console.log(this.rezervacije)
+  }
+
 }
