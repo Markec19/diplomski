@@ -48,21 +48,47 @@ export class RezervacijaFormComponent implements OnInit {
     this.generateTimeSlots();
     this.vremeZavrsetka = this.vremePocetka;
 
-    this.axiosService.request('GET', '/predmeti', {}).then(response => {
-      this.predmeti = this.vratiPredmete(response.data);
-    });
+    // this.axiosService.request('GET', '/predmeti', {}).then(response => {
+    //   this.predmeti = this.vratiPredmete(response.data);
+    // });
 
-    this.axiosService.request('GET', '/tip_rezervacije', {}).then(response => {
-      this.tipRezervacije = this.vratiTipRezervacije(response.data);
-    });
+    // this.axiosService.request('GET', '/tip_rezervacije', {}).then(response => {
+    //   this.tipRezervacije = this.vratiTipRezervacije(response.data);
+    // });
 
-    this.axiosService.request('GET', '/podtip_rezervacije', {}).then(response => {
-      this.podtipRezervacije = this.vratiPodtip(response.data);
-    });
+    // this.axiosService.request('GET', '/podtip_rezervacije', {}).then(response => {
+    //   this.podtipRezervacije = this.vratiPodtip(response.data);
+    // });
 
-    this.axiosService.request('GET', `/rezervacije/sala/${this.sala.salaId}`, {}).then(response => {
-      this.rezervacijeSale = response.data;
-    });
+    // this.axiosService.request('GET', `/rezervacije/sala/${this.sala.salaId}`, {}).then(response => {
+    //   this.rezervacijeSale = response.data;
+    // });
+
+
+
+    this.axiosService.request(
+      "GET",
+      "/predmeti",
+      {}
+    ).then(
+      (response) => this.predmeti = this.vratiPredmete(response.data)
+    )
+  
+    this.axiosService.request(
+      "GET",
+      "/tip_rezervacije",
+      {}
+    ).then(
+      (response) => this.tipRezervacije = this.vratiTipRezervacije(response.data)
+    )
+  
+    this.axiosService.request(
+      "GET",
+      "/podtip_rezervacije",
+      {}
+    ).then(
+      (response) => this.podtipRezervacije = this.vratiPodtip(response.data)
+    )
   }
 
   generateTimeSlots(): void {
@@ -97,44 +123,47 @@ export class RezervacijaFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const vremePocetka = this.rezervacijaForm.controls['vremePocetka'].value;
-    if (this.vremeZavrsetka <= vremePocetka) {
+    if (this.vremeZavrsetka <= this.vremePocetka) {
       alert('Vreme završetka mora biti posle vremena početka');
       return;
     }
 
     let rezervacija: Rezervacija = new Rezervacija();
 
-    if (this.izabraniTipId !== 3) {
-      let izabraniPredmet = this.predmeti.find(predmet => predmet.predmetId === this.izabraniPredmetId) ?? null;
-      let izabraniPodtip = this.podtipRezervacije.find(podtip => podtip.podtipId === this.izabraniPodtipId) ?? null;
+    if(this.izabraniTipId !== 3){
+      let izabraniPredmet: Predmet | null = this.predmeti.find(predmet => predmet.predmetId == this.izabraniPredmetId) ?? null;
+      let izabraniPodtip: PodtipRezervacije | null = this.podtipRezervacije.find(podtip => podtip.podtipId == this.izabraniPodtipId) ?? null;
 
       rezervacija.predmet = izabraniPredmet;
       rezervacija.podtipRezervacije = izabraniPodtip;
     }
 
-    if (this.izabraniTipId === 3) {
-      rezervacija.dogadjaj = this.rezervacijaForm.controls['dogadjaj'].value;
-      rezervacija.podtipRezervacije = this.podtipRezervacije.find(podtip => podtip.tipRezervacije?.tipRezervacijeId === 3) ?? null;
+    if(this.izabraniTipId === 3){
+      rezervacija.dogadjaj = (document.getElementById('dogadjaj') as HTMLInputElement).value;
+      rezervacija.podtipRezervacije = this.podtipRezervacije.find(podtip => podtip.tipRezervacije?.tipRezervacijeId == 3) ?? null;
     }
 
+    
     rezervacija.sala = this.sala;
-    rezervacija.vremePocetka = vremePocetka;
+    rezervacija.vremePocetka = this.vremePocetka; 
     rezervacija.vremeZavrsetka = this.vremeZavrsetka;
     rezervacija.datumSlanjaZahteva = new Date();
     let datum = localStorage.getItem('datum');
-    if (datum !== null) {
+    if(datum !== null){
       rezervacija.datumRezervacije = new Date(datum);
     }
     let username = localStorage.getItem("username");
-    this.kreiranaRezervacija = rezervacija;
 
-    this.axiosService.request("POST", "/sacuvaj/rezervacija", {
-      rezervacija: rezervacija,
-      username: username
-    }).then(response => {
-      this.router.navigate(['/kalendar']);
-    });
+    this.axiosService.request(
+      "POST",
+      "/sacuvaj/rezervacija",
+      {      
+        rezervacija: rezervacija,
+        username: username
+      }
+    ).then(response => {
+        this.router.navigate(['/kalendar']);
+      })
     this.formClose.emit();
     location.reload();
   }
