@@ -1,21 +1,24 @@
 <app-meni></app-meni>
 
-
-<div class="notifications-table">
+<div class="notifications-list">
     <h2>Obaveštenja</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Datum</th>
-          <th>Obaveštenje</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let notifikacija of notifikacije" (click)="odvediDoRezervacije(notifikacija)">
-          <td>{{ notifikacija.rezervacija?.datumRezervacije| date:'yyyy-MM-dd' }}</td>
-          <td>{{ notifikacija.notifikacija }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <div *ngFor="let notifikacija of notifikacije" class="notification-card" (click)="odvediDoRezervacije(notifikacija)">
+        <div class="notification-date">
+            {{ prikaziDatum(notifikacija) | date: 'dd/MM/yyyy' }}
+        </div>
+        <div class="notification-content">
+            <div class="notification-title" *ngIf="notifikacija.rezervacija?.predmet !== null">
+                {{ notifikacija.rezervacija?.predmet?.predmet }} - {{ notifikacija.rezervacija?.status?.status }}
+            </div>
+            <div class="notification-title" *ngIf="notifikacija.rezervacija?.dogadjaj !== null">
+              {{ notifikacija.rezervacija?.dogadjaj }} - {{ notifikacija.rezervacija?.status?.status }}
+          </div>
+            <div class="notification-text">
+                {{ notifikacija.notifikacija }}
+            </div>
+        </div>
+    </div>
+</div>
+
+  
   

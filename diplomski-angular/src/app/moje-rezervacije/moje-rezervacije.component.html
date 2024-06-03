@@ -1,31 +1,54 @@
 <app-meni></app-meni>
 
-<div class="reservations-container">
+
+  <div class="reservations-container">
     <h2>Moje Rezervacije</h2>
+    <div class="filter-container">
+        <label for="statusFilter">Filtriraj po statusu:</label>
+        <select id="statusFilter" (change)="onStatusFilterChange($event)">
+            <option value="sve">Sve</option>
+            <option value="cekanje">Na čekanju</option>
+            <option value="prihvacena">Prihvaćeno</option>
+            <option value="odbijena">Odbijeno</option>
+            <option value="odjavljena">Odjavljeno</option>
+        </select>
+    </div>
     <table class="reservations-table">
-      <thead>
-        <tr>
-          <th>Id</th>
-          <th>Datum</th>
-          <th>Sala</th>
-          <th>Vreme</th>
-          <th>Predmet/Dogadjaj</th>
-          <th>Status</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let rezervacija of rezervacije">
-          <td>{{ rezervacija.rezervacijaId }}</td>
-          <td>{{ rezervacija.datumRezervacije | date:'yyyy-MM-dd' }}</td>
-          <td>{{ rezervacija.sala?.sala }}</td>
-          <td>({{ rezervacija.vremePocetka }} - {{ rezervacija.vremeZavrsetka }})</td>
-          <td *ngIf="rezervacija.predmet !== null">{{ rezervacija.predmet.predmet }}</td>
-          <td *ngIf="rezervacija.dogadjaj !== null">Dogadjaj: {{ rezervacija.dogadjaj }}</td>
-          <td>{{ rezervacija.status?.status }}</td>
-          <td><button class="btn btn-danger" (click)="odjaviRezervaciju(rezervacija)">Odjavi</button></td>
-        </tr>
-      </tbody>
+        <thead>
+            <tr>
+                <!-- <th>Id</th> -->
+                <th>Datum</th>
+                <th>Sala</th>
+                <th>Vreme</th>
+                <th>Predmet/Dogadjaj</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let rezervacija of filtriraneRezervacije">
+                <!-- <td>{{ rezervacija.rezervacijaId }}</td> -->
+                <td>{{ rezervacija.datumRezervacije | date:'dd/MM/yyyy' }}</td>
+                <td>{{ rezervacija.sala?.sala }}</td>
+                <td>{{ rezervacija.vremePocetka }} - {{ rezervacija.vremeZavrsetka }}</td>
+                <td *ngIf="rezervacija.predmet !== null">{{ rezervacija.predmet.predmet }}</td>
+                <td *ngIf="rezervacija.dogadjaj !== null">Dogadjaj: {{ rezervacija.dogadjaj }}</td>
+                <td>{{ rezervacija.status?.status }}</td>
+                <td *ngIf="!odjavljena(rezervacija)">
+                    <button class="btn btn-danger" (click)="otvoriModal(rezervacija)">Odjavi</button>
+                </td>
+            </tr>
+        </tbody>
     </table>
-  </div>
+
+    <div class="modal" [ngClass]="{'show': prikaziModal}">
+        <div class="modal-content">
+            <span class="close" (click)="zatvoriModal()">&times;</span>
+            <p>Da li ste sigurni da želite da odjavite ovu rezervaciju?</p>
+            <button class="btn btn-danger" (click)="odjaviRezervaciju(selektovanaRezervacija)">Odjavi</button>
+            <button class="btn btn-secondary" (click)="zatvoriModal()">Otkaži</button>
+        </div>
+    </div>
+</div>
+
   

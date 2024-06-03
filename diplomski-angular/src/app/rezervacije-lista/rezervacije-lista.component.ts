@@ -83,7 +83,7 @@ export class RezervacijeListaComponent implements OnInit{
           username: username
         }
       ).then(response => {
-        this.router.navigate(['/kalendar']);
+        this.router.navigate(['/sale']);
       })
     }
   }

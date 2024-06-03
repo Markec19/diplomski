@@ -74,13 +74,6 @@ export class SaleTabelaComponent {
     }
   }
 
-  // onCellClick(sala: Sala, vreme: string): void {
-  //   if ((!this.isCellReserved(sala, vreme) && !this.isAdmin()) || (this.isCellReserved(sala, vreme) && this.isAdmin())) {
-  //     this.izabranaCelija = { sala, vreme };
-  //     this.izabranaRezervacija = this.getReservationForCell(sala, vreme);
-  //   }
-  // }
-
   onCellClick(sala: Sala, vreme: string): void {
     this.izabranaCelija = { sala, vreme };
     if (this.isCellReserved(sala, vreme)) {
@@ -98,8 +91,6 @@ export class SaleTabelaComponent {
     ).then(
       (response) => this.rezervacije = this.vratiRezervacije(response.data)
     )   
-
-    //this.rezervacije = this.axiosService.getReservations();
   }
 
   getReservationForCell(sala: Sala, vreme: string): Rezervacija | null {
@@ -161,13 +152,6 @@ export class SaleTabelaComponent {
   isAdmin(): boolean{
     return this.rola?.rola === "admin";
   }
-
-  // getStatus(sala: Sala, vreme: string): string | null{
-  //   let rezervacija = this.getReservationForCell(sala, vreme);
-  //   if(rezervacija?.status)
-  //     return rezervacija?.status?.status
-  //   return null;
-  // }
 
   
   applyFilter(): void {

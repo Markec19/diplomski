@@ -26,7 +26,7 @@ public class EmailSenderService {
                                 String body,
                                 String subject){
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("lukalukeze.lm@gmail.com");
+        message.setFrom("springdiplomski@outlook.com");
         message.setTo(toEmail);
         message.setText(body);
         message.setSubject(subject);
@@ -43,7 +43,7 @@ public class EmailSenderService {
 
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
 
-        mimeMessageHelper.setFrom("lukalukeze.lm@gmail.com");
+        mimeMessageHelper.setFrom("springdiplomski@outlook.com");
         mimeMessageHelper.setTo(toEmail);
         mimeMessageHelper.setText(body);
         mimeMessageHelper.setSubject(subject);

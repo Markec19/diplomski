@@ -1,16 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Rezervacija } from '../models/rezervacija';
 import { AxiosService } from '../service/axios.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-moje-rezervacije',
   templateUrl: './moje-rezervacije.component.html',
-  styleUrl: './moje-rezervacije.component.css'
+  styleUrls: ['./moje-rezervacije.component.css']
 })
 export class MojeRezervacijeComponent implements OnInit {
 
   rezervacije: Rezervacija[] = [];
+  filtriraneRezervacije: Rezervacija[] = [];
+  selektovanaRezervacija: Rezervacija | null = null;
+  prikaziModal: boolean = false;
+  izabraniStatus: string = 'sve';
 
   constructor(private axiosService: AxiosService) { }
 
@@ -23,15 +26,28 @@ export class MojeRezervacijeComponent implements OnInit {
         username
       }
     ).then(
-      (response) => this.rezervacije = this.vratiRezervacije(response.data)
-    )
+      (response) => {
+        this.rezervacije = this.vratiRezervacije(response.data);
+        this.filtriraneRezervacije = this.rezervacije;
+      }
+    );
   }
 
   vratiRezervacije(response: any): Rezervacija[] {
     return response.map((item: any) => new Rezervacija(item));
   }
   
-  odjaviRezervaciju(rezervacija: Rezervacija) {
+  otvoriModal(rezervacija: Rezervacija) {
+    this.selektovanaRezervacija = rezervacija;
+    this.prikaziModal = true;
+  }
+
+  zatvoriModal() {
+    this.selektovanaRezervacija = null;
+    this.prikaziModal = false;
+  }
+
+  odjaviRezervaciju(rezervacija: Rezervacija | null) {
     this.axiosService.request(
       "PUT",
       "/odjavi/rezervacija",
@@ -40,9 +56,28 @@ export class MojeRezervacijeComponent implements OnInit {
       }
     ).then(
       (response) => {
-        this.rezervacije = this.vratiRezervacije(response.data)
-        location.reload()
+        // this.rezervacije = this.vratiRezervacije(response.data);
+        // this.filtriraneRezervacije = this.rezervacije;
+        // this.zatvoriModal();
+        location.reload();
       }
-    )
+    );
+  }
+
+  odjavljena(rezervacija: Rezervacija): boolean {
+    return rezervacija.status?.status === "odjavljena";
+  }
+
+  onStatusFilterChange(event: any): void {
+    this.izabraniStatus = event.target.value;
+    this.applyFilter();
+  }
+
+  applyFilter(): void {
+    if (this.izabraniStatus === 'sve') {
+      this.filtriraneRezervacije = this.rezervacije;
+    } else {
+      this.filtriraneRezervacije = this.rezervacije.filter(rezervacija => rezervacija.status?.status === this.izabraniStatus);
+    }
   }
 }

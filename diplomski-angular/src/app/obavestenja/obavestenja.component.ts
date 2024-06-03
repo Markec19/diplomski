@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Notifikacija } from '../models/notifikacija';
 import { AxiosService } from '../service/axios.service';
 import { Router } from '@angular/router';
+import { Profil } from '../models/profil';
+import { Rola } from '../models/rola';
 
 @Component({
   selector: 'app-obavestenja',
@@ -11,6 +13,7 @@ import { Router } from '@angular/router';
 export class ObavestenjaComponent  implements OnInit{
 
   notifikacije: Notifikacija[] = [];
+  rola: Rola | null = null;
 
   constructor(private axiosService: AxiosService, private router: Router) {}
   
@@ -29,6 +32,16 @@ export class ObavestenjaComponent  implements OnInit{
     ).then(
       (response) => this.notifikacije = response.data
     );
+
+    this.axiosService.request(
+      "POST",
+      "/profil/rola",
+      {
+        username: localStorage.getItem("username")
+      }
+    ).then(
+      (response) => this.rola = response.data
+    )
   }
 
   odvediDoRezervacije(notifikacija: Notifikacija){
@@ -46,6 +59,24 @@ export class ObavestenjaComponent  implements OnInit{
       localStorage.setItem("datum", datum + "");
       this.router.navigate(['/sale']);
     }  
+  }
+
+  prikaziDatum(notifikacija: Notifikacija): Date | null {
+    let datumObrade = notifikacija.rezervacija?.datumObrade;
+    let datumSlanja = notifikacija.rezervacija?.datumSlanjaZahteva;
+    if(datumSlanja && this.isAdmin()){
+      return datumSlanja;
+    }
+    
+    if(datumObrade && !this.isAdmin()){
+      return datumObrade
+    }
+
+    return null;
+  }
+
+  isAdmin(): boolean {
+    return this.rola?.rola === "admin";
   }
 
 }
