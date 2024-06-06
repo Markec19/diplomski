@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Rezervacija } from '../models/rezervacija';
 import { AxiosService } from '../service/axios.service';
+import { Rola } from '../models/rola';
 
 @Component({
   selector: 'app-moje-rezervacije',
@@ -14,6 +15,8 @@ export class MojeRezervacijeComponent implements OnInit {
   selektovanaRezervacija: Rezervacija | null = null;
   prikaziModal: boolean = false;
   izabraniStatus: string = 'sve';
+  rola: Rola | null = null;
+  izabranaRezervacija: Rezervacija | null = null;
 
   constructor(private axiosService: AxiosService) { }
 
@@ -31,6 +34,16 @@ export class MojeRezervacijeComponent implements OnInit {
         this.filtriraneRezervacije = this.rezervacije;
       }
     );
+
+    this.axiosService.request(
+      "POST",
+      "/profil/rola",
+      {
+        username
+      }
+    ).then(
+      (response) => this.rola = response.data,
+    )
   }
 
   vratiRezervacije(response: any): Rezervacija[] {
@@ -79,5 +92,9 @@ export class MojeRezervacijeComponent implements OnInit {
     } else {
       this.filtriraneRezervacije = this.rezervacije.filter(rezervacija => rezervacija.status?.status === this.izabraniStatus);
     }
+  }
+
+  prikazRezervacije(rezervacija: Rezervacija) {
+    this.izabranaRezervacija = rezervacija;
   }
 }

@@ -16,7 +16,6 @@
     <table class="reservations-table">
         <thead>
             <tr>
-                <!-- <th>Id</th> -->
                 <th>Datum</th>
                 <th>Sala</th>
                 <th>Vreme</th>
@@ -26,8 +25,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let rezervacija of filtriraneRezervacije">
-                <!-- <td>{{ rezervacija.rezervacijaId }}</td> -->
+            <tr *ngFor="let rezervacija of filtriraneRezervacije" (click)="prikazRezervacije(rezervacija)">
                 <td>{{ rezervacija.datumRezervacije | date:'dd/MM/yyyy' }}</td>
                 <td>{{ rezervacija.sala?.sala }}</td>
                 <td>{{ rezervacija.vremePocetka }} - {{ rezervacija.vremeZavrsetka }}</td>
@@ -50,5 +48,7 @@
         </div>
     </div>
 </div>
+
+<app-rezervacije-lista class="overlay" *ngIf="izabranaRezervacija" [rezervacija]="izabranaRezervacija" [rola]="rola"></app-rezervacije-lista>
 
   

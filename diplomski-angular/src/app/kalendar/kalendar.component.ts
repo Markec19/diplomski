@@ -11,11 +11,12 @@ import { AxiosService } from '../service/axios.service';
   styleUrl: './kalendar.component.css'
 })
 export class KalendarComponent implements OnInit{
-  selectedDate: Date = new Date();
-  currentDate: Date = new Date();
+  izabranDatum: Date = new Date();
+  trenutniMesec: Date = new Date();
+  danasnjiDatum: Date = new Date();
   daniUNedelji: string[] = ['Pon', 'Uto', 'Sre', 'Čet', 'Pet', 'Sub', 'Ned'];
   meseci: string[] = [];
-  weeks: (number | null)[][] = [];
+  nedelje: (number | null)[][] = [];
   rezervacije: Rezervacija[] = [];  
 
   constructor(private axiosService: AxiosService, private route: ActivatedRoute, private router: Router) {}
@@ -33,11 +34,11 @@ export class KalendarComponent implements OnInit{
 
       let datum = localStorage.getItem("datum");
       if(datum){
-        this.currentDate = new Date(datum);
+        this.trenutniMesec = new Date(datum);
       }   
 
-      let godina =  this.currentDate.getFullYear();
-      let mesec = this.currentDate.getMonth() + 1;
+      let godina =  this.trenutniMesec.getFullYear();
+      let mesec = this.trenutniMesec.getMonth() + 1;
       this.generateCalendar();
     }else {
       this.router.navigate(['/login']);
@@ -46,24 +47,24 @@ export class KalendarComponent implements OnInit{
 
   generateCalendar() {
 
-    this.weeks = [];
+    this.nedelje = [];
 
-    const year = this.currentDate.getFullYear();
-    const month = this.currentDate.getMonth();
-    const firstDayOfMonth = new Date(year, month, 1);
-    const lastDayOfMonth = new Date(year, month + 1, 0);
-    const daysInMonth = lastDayOfMonth.getDate();
+    const godina = this.trenutniMesec.getFullYear();
+    const mesec = this.trenutniMesec.getMonth();
+    const prviUMesecu = new Date(godina, mesec, 1);
+    const poslednjiUMesecu = new Date(godina, mesec + 1, 0);
+    const daniUMesecu = poslednjiUMesecu.getDate();
     let currentWeek: (number | null)[] = [];
-    const firstDayOfWeek = (firstDayOfMonth.getDay() + 6) % 7;
+    const firstDayOfWeek = (prviUMesecu.getDay() + 6) % 7;
 
     for (let i = 0; i < firstDayOfWeek; i++) {
       currentWeek.push(null);
     }
 
-    for (let day = 1; day <= daysInMonth; day++) {
+    for (let day = 1; day <= daniUMesecu; day++) {
       currentWeek.push(day);
       if (currentWeek.length === 7) {
-        this.weeks.push([...currentWeek]);
+        this.nedelje.push([...currentWeek]);
         currentWeek = [];
       }
     }
@@ -73,30 +74,30 @@ export class KalendarComponent implements OnInit{
       for (let i = 0; i < remainingDays; i++) {
         currentWeek.push(null);
       }
-      this.weeks.push([...currentWeek]);
+      this.nedelje.push([...currentWeek]);
     }
 
-    localStorage.setItem("datum", this.currentDate + "");
+    localStorage.setItem("datum", this.trenutniMesec + "");
   }
 
   goToPreviousMonth() {
-    const currentMonth = this.currentDate.getMonth();
-    const currentYear = this.currentDate.getFullYear();
-    this.currentDate = new Date(currentYear, currentMonth - 1, 1);   
+    const currentMonth = this.trenutniMesec.getMonth();
+    const currentYear = this.trenutniMesec.getFullYear();
+    this.trenutniMesec = new Date(currentYear, currentMonth - 1, 1);   
     this.updateRoute();
     this.generateCalendar();
   }
 
   goToNextMonth() {
-    const currentMonth = this.currentDate.getMonth();
-    const currentYear = this.currentDate.getFullYear();
-    this.currentDate = new Date(currentYear, currentMonth + 1, 1);    
+    const currentMonth = this.trenutniMesec.getMonth();
+    const currentYear = this.trenutniMesec.getFullYear();
+    this.trenutniMesec = new Date(currentYear, currentMonth + 1, 1);    
     this.updateRoute();
     this.generateCalendar();
   }
 
   getCurrentMonthName(): string {
-    const mesecIndeks: number = this.currentDate.getMonth();
+    const mesecIndeks: number = this.trenutniMesec.getMonth();
     return this.meseci[mesecIndeks];
   }
 
@@ -110,8 +111,8 @@ export class KalendarComponent implements OnInit{
   }
 
   handleCellClick(year: number, month: number, day: number) {
-    this.selectedDate = new Date(year, month, day)
-    localStorage.setItem("datum", this.selectedDate + "");
+    this.izabranDatum = new Date(year, month, day)
+    localStorage.setItem("datum", this.izabranDatum + "");
     this.router.navigate(['/sale']);
   }
 
@@ -120,6 +121,21 @@ export class KalendarComponent implements OnInit{
   }  
 
   updateRoute() {
-    this.router.navigate(['/pocetna', this.currentDate.getFullYear(), this.currentDate.getMonth() + 1]);
+    this.router.navigate(['/pocetna', this.trenutniMesec.getFullYear(), this.trenutniMesec.getMonth() + 1]);
   }
+
+  prosliDatum(godina: number, mesec: number, dan: number | null): boolean {
+    if (dan === null) 
+      return false;
+    const date = new Date(godina, mesec, dan);
+    return date < this.danasnjiDatum;
+  }
+
+  danas(godina: number, mesec: number, dan: number | null): boolean {
+    if (dan === null) return false;
+    const date = new Date(godina, mesec, dan);
+    return date.toDateString() === this.danasnjiDatum.toDateString();
+  }
+
+
 }

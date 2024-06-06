@@ -55,8 +55,6 @@
       background-color: lightcoral;
       margin-bottom: 0.3em; 
     }
-
-
     
     
     .overlay {
@@ -128,4 +126,18 @@ button {
 .daniUNedelji .dan {
   padding: 10px;
   border: 1px solid #ccc;
+}
+
+.prazan-dan {
+  background-color: #e9e9e9;
+}
+
+.prosli-datum {
+  background-color: #d3d3d3;
+  color: #888;
+}
+
+.danas {
+  background-color: #f3a097;
+  color: black;
 }

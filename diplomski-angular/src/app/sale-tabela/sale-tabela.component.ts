@@ -96,9 +96,6 @@ export class SaleTabelaComponent {
   getReservationForCell(sala: Sala, vreme: string): Rezervacija | null {
     const targetTime = new Date(`1970-01-01T${vreme}:00`);
     return this.filteredRezervacije.find(rezervacija => {
-      // if (rezervacija.sala?.salaId !== sala.salaId || (rezervacija.status?.status === 'odjavljena' && !this.isAdmin())) {
-      //   return false;
-      // }
 
       if (!this.prikazRezervacije(rezervacija, sala)) {
         return false;
@@ -179,6 +176,11 @@ export class SaleTabelaComponent {
     if(this.izabraniStatus !== 'sve' && !this.isCellReserved(sala, vreme)){
       return true;
     }
+
+    if(this.prosliDatum()){
+      return true;
+    }
+    
     return false;
   }
 
@@ -200,6 +202,16 @@ export class SaleTabelaComponent {
     }
     
     return true;
+  }
+
+  prosliDatum(): boolean {
+    if (this.datum === null) 
+      return false;
+
+    const danas = new Date();
+    danas.setHours(0, 0, 0, 0);
+
+    return this.datum < danas;
   }
 
   

@@ -49,24 +49,6 @@ export class RezervacijaFormComponent implements OnInit {
     this.generateTimeSlots();
     this.vremeZavrsetka = this.vremePocetka;
 
-    // this.axiosService.request('GET', '/predmeti', {}).then(response => {
-    //   this.predmeti = this.vratiPredmete(response.data);
-    // });
-
-    // this.axiosService.request('GET', '/tip_rezervacije', {}).then(response => {
-    //   this.tipRezervacije = this.vratiTipRezervacije(response.data);
-    // });
-
-    // this.axiosService.request('GET', '/podtip_rezervacije', {}).then(response => {
-    //   this.podtipRezervacije = this.vratiPodtip(response.data);
-    // });
-
-    // this.axiosService.request('GET', `/rezervacije/sala/${this.sala.salaId}`, {}).then(response => {
-    //   this.rezervacijeSale = response.data;
-    // });
-
-
-
     this.axiosService.request(
       "GET",
       "/predmeti",

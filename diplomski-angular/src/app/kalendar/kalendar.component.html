@@ -6,26 +6,24 @@
     <button (click)="goToNextMonth()">Naredni Mesec</button>
 </div>
 
- <table>
-    <tr  class="daniUNedelji">
-        <td *ngFor="let dan of daniUNedelji" class="dan">
-            {{dan}}
-        </td>
+<table>
+    <tr class="daniUNedelji">
+      <td *ngFor="let dan of daniUNedelji" class="dan">
+        {{dan}}
+      </td>
     </tr>
-    <tr *ngFor="let week of weeks">
-        <td *ngFor="let day of week" class="calendar-cell">
-            <div *ngIf="day != null" (click)="handleCellClick(currentDate.getFullYear(), currentDate.getMonth(), day)">
-                <div class="date">{{ day }}</div>
-                <div class="reservations" *ngIf="day != null">
-                    <!-- <div *ngFor="let rezervacija of getReservationsForDate(currentDate.getFullYear(), currentDate.getMonth(), day)"
-                    [ngClass]="{
-                        'accepted-reservation': rezervacija.status?.status === 'prihvacen',
-                        'waiting-reservation': rezervacija.status?.status === 'cekanje',
-                        'rejected-reservation': rezervacija.status?.status === 'odbijen'}">
-                        {{ rezervacija.predmet?.predmet }} ({{rezervacija.sala?.sala}})
-                    </div> -->
-                </div>
-            </div>
-        </td>
+    <tr *ngFor="let nedelja of nedelje">
+      <td *ngFor="let dan of nedelja" class="calendar-cell"
+          [ngClass]="{
+            'prazan-dan': dan === null,
+            'prosli-datum': prosliDatum(trenutniMesec.getFullYear(), trenutniMesec.getMonth(), dan),
+            'danas': danas(trenutniMesec.getFullYear(), trenutniMesec.getMonth(), dan)
+          }">
+        <div *ngIf="dan != null" (click)="handleCellClick(trenutniMesec.getFullYear(), trenutniMesec.getMonth(), dan)">
+          <div class="date">{{ dan }}</div>
+          <div class="reservations" *ngIf="dan != null"></div>
+        </div>
+      </td>
     </tr>
-</table>
+  </table>
+  
