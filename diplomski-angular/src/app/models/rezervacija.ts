@@ -11,6 +11,7 @@ export class Rezervacija {
     datumRezervacije: Date = new Date();
     datumSlanjaZahteva: Date = new Date();
     datumObrade: Date | null= null;
+    napomena: string | null = null;
     dogadjaj: string | null = null;   
     profil: Profil | null = null;
     admin: Profil | null = null;

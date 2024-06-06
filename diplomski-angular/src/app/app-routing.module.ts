@@ -12,6 +12,7 @@ const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'pocetna', component: KalendarComponent, canActivate: [AuthGuard] },
+  {path: 'pocetna/:godina/:mesec', component: KalendarComponent, canActivate: [AuthGuard] },
   {path: 'lista', component: RezervacijeListaComponent, canActivate: [AuthGuard] },
   {path: 'sale', component: SaleTabelaComponent, canActivate: [AuthGuard] },
   {path: 'obavestenja', component: ObavestenjaComponent, canActivate: [AuthGuard] },

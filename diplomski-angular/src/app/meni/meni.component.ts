@@ -36,6 +36,7 @@ export class MeniComponent implements OnInit {
   }
 
   otvoriPocetnu() {
+    localStorage.setItem("datum",new Date() + "")    
     this.router.navigate(['/pocetna']);
   }
 

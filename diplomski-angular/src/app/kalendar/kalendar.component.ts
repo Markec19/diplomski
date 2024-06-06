@@ -18,29 +18,30 @@ export class KalendarComponent implements OnInit{
   weeks: (number | null)[][] = [];
   rezervacije: Rezervacija[] = [];  
 
-  constructor(private axiosService: AxiosService, private route: ActivatedRoute, private router: Router) {
+  constructor(private axiosService: AxiosService, private route: ActivatedRoute, private router: Router) {}
+
+  ngOnInit(): void {
+
+
     let token = this.axiosService.getAuthToken()
     if(token != null){
+
       this.meseci = [
         "Januar", "Februar", "Mart", "April", "Maj", "Jun",
         "Jul", "Avgust", "Septembar", "Oktobar", "Novembar", "Decembar"
       ];
+
+      let datum = localStorage.getItem("datum");
+      if(datum){
+        this.currentDate = new Date(datum);
+      }   
+
+      let godina =  this.currentDate.getFullYear();
+      let mesec = this.currentDate.getMonth() + 1;
       this.generateCalendar();
     }else {
       this.router.navigate(['/login']);
     }
-  }
-
-  ngOnInit(): void {
-      this.axiosService.request(
-        "GET",
-        "/rezervacije",
-        {}
-      ).then(
-        (response) => this.rezervacije = this.vratiRezervacije(response.data)
-      )
-
-      localStorage.removeItem('datum');
   }
 
   generateCalendar() {
@@ -74,19 +75,23 @@ export class KalendarComponent implements OnInit{
       }
       this.weeks.push([...currentWeek]);
     }
+
+    localStorage.setItem("datum", this.currentDate + "");
   }
 
   goToPreviousMonth() {
     const currentMonth = this.currentDate.getMonth();
     const currentYear = this.currentDate.getFullYear();
-    this.currentDate = new Date(currentYear, currentMonth - 1, 1);
+    this.currentDate = new Date(currentYear, currentMonth - 1, 1);   
+    this.updateRoute();
     this.generateCalendar();
   }
 
   goToNextMonth() {
     const currentMonth = this.currentDate.getMonth();
     const currentYear = this.currentDate.getFullYear();
-    this.currentDate = new Date(currentYear, currentMonth + 1, 1);
+    this.currentDate = new Date(currentYear, currentMonth + 1, 1);    
+    this.updateRoute();
     this.generateCalendar();
   }
 
@@ -113,4 +118,8 @@ export class KalendarComponent implements OnInit{
   vratiRezervacije(response: any): Rezervacija[] {
     return response.map((item: any) => new Rezervacija(item));
   }  
+
+  updateRoute() {
+    this.router.navigate(['/pocetna', this.currentDate.getFullYear(), this.currentDate.getMonth() + 1]);
+  }
 }

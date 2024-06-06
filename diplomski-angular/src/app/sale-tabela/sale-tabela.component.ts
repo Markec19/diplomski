@@ -96,9 +96,14 @@ export class SaleTabelaComponent {
   getReservationForCell(sala: Sala, vreme: string): Rezervacija | null {
     const targetTime = new Date(`1970-01-01T${vreme}:00`);
     return this.filteredRezervacije.find(rezervacija => {
-      if (rezervacija.sala?.salaId !== sala.salaId || (rezervacija.status?.status === 'odjavljena' && !this.isAdmin())) {
+      // if (rezervacija.sala?.salaId !== sala.salaId || (rezervacija.status?.status === 'odjavljena' && !this.isAdmin())) {
+      //   return false;
+      // }
+
+      if (!this.prikazRezervacije(rezervacija, sala)) {
         return false;
       }
+
       const startTime = new Date(`1970-01-01T${rezervacija.vremePocetka}:00`);
       const endTime = new Date(`1970-01-01T${rezervacija.vremeZavrsetka}:00`);
       return startTime <= targetTime && targetTime < endTime;
@@ -180,5 +185,23 @@ export class SaleTabelaComponent {
   vratiNizRezervacija() {
     console.log(this.rezervacije)
   }
+
+  prikazRezervacije(rezervacija: Rezervacija, sala: Sala) : boolean{
+    if(rezervacija.sala?.salaId !== sala.salaId){
+      return false;
+    }
+
+    if(rezervacija.status?.status === 'odjavljena' && !this.isAdmin()) {
+      return false;
+    }
+    
+    if(rezervacija.status?.status === "odbijena"){
+      return false;
+    }
+    
+    return true;
+  }
+
+  
 
 }

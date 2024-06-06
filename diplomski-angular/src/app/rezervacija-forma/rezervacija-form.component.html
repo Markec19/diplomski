@@ -48,10 +48,15 @@
       </div>
     </div>
 
+    <div class="input" *ngIf="izabraniTipId !== 0">
+      <input type="text" formControlName="napomena" placeholder="napomena" id="napomena">
+    </div>
+
     <div *ngIf="izabraniTipId === 3">
       <div class="input">
         <input type="text" formControlName="dogadjaj" placeholder="dogadjaj" id="dogadjaj">
-      </div>
+    </div>
+
 
       <div>
         <label for="vremeZavrsetka">Vreme završetka:</label>

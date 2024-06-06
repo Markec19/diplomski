@@ -70,7 +70,7 @@ public class EmailSenderService {
                 "DTSTAMP:" + formatDate(new Date()) + "\n" +
                 "DTSTART:" + start + "\n" +
                 "DTEND:" + end + "\n" +
-                "SUMMARY:Rezervacija: " + predmet + "u sali - " + sala + "\n" +
+                "SUMMARY:Rezervacija: " + predmet + " u sali - " + sala + "\n" +
                 "DESCRIPTION:" + predmet + "\n" +
                 "END:VEVENT\n" +
                 "END:VCALENDAR";

@@ -35,6 +35,9 @@ public class Rezervacija {
     @Column(name = "datum_obrade")
     private Date datumObrade;
 
+    @Column(name = "napomena")
+    private String napomena;
+
     @Column(name = "dogadjaj")
     private String dogadjaj;
 
@@ -82,12 +85,13 @@ public class Rezervacija {
 
 
     public Rezervacija(String vremePocetka, String vremeZavrsetka, Date datumRezervacije, Date datumSlanjaZahteva, Date datumObrade, String dogadjaj,
-                       Profil profil, Profil admin, Predmet predmet, Status status, PodtipRezervacije podtipRezervacije, Sala sala) {
+                       Profil profil, Profil admin, Predmet predmet, Status status, PodtipRezervacije podtipRezervacije, Sala sala, String napomena) {
         this.vremePocetka = vremePocetka;
         this.vremeZavrsetka = vremeZavrsetka;
         this.datumRezervacije = datumRezervacije;
         this.datumSlanjaZahteva = datumSlanjaZahteva;
         this.datumObrade = datumObrade;
+        this.napomena = napomena;
         this.dogadjaj = dogadjaj;
         this.profil = profil;
         this.admin = admin;
@@ -98,13 +102,14 @@ public class Rezervacija {
     }
 
     public Rezervacija(int rezervacijaId, String vremePocetka, String vremeZavrsetka, Date datumRezervacije, Date datumSlanjaZahteva, Date datumObrade,
-                       String dogadjaj, Profil profil, Profil admin, Predmet predmet, Status status, PodtipRezervacije podtipRezervacije, Sala sala) {
+                       String dogadjaj, Profil profil, Profil admin, Predmet predmet, Status status, PodtipRezervacije podtipRezervacije, Sala sala, String napomena) {
         this.rezervacijaId = rezervacijaId;
         this.vremePocetka = vremePocetka;
         this.vremeZavrsetka = vremeZavrsetka;
         this.datumRezervacije = datumRezervacije;
         this.datumSlanjaZahteva = datumSlanjaZahteva;
         this.datumObrade = datumObrade;
+        this.napomena = napomena;
         this.dogadjaj = dogadjaj;
         this.profil = profil;
         this.admin = admin;
@@ -160,6 +165,14 @@ public class Rezervacija {
 
     public void setDatumObrade(Date datumObrade) {
         this.datumObrade = datumObrade;
+    }
+
+    public String getNapomena() {
+        return napomena;
+    }
+
+    public void setNapomena(String napomena) {
+        this.napomena = napomena;
     }
 
     public String getDogadjaj() {

@@ -43,6 +43,7 @@ export class RezervacijaFormComponent implements OnInit {
       tipRezervacije: ['', Validators.required],
       podtipRezervacije: ['', Validators.required],
       dogadjaj: [''],
+      napomena: [''],
     });
 
     this.generateTimeSlots();
@@ -143,6 +144,7 @@ export class RezervacijaFormComponent implements OnInit {
       rezervacija.podtipRezervacije = this.podtipRezervacije.find(podtip => podtip.tipRezervacije?.tipRezervacijeId == 3) ?? null;
     }
 
+    rezervacija.napomena = (document.getElementById('napomena') as HTMLInputElement).value;   
     
     rezervacija.sala = this.sala;
     rezervacija.vremePocetka = this.vremePocetka; 
