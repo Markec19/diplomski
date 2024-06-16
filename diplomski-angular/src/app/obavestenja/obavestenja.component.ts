@@ -25,7 +25,7 @@ export class ObavestenjaComponent  implements OnInit{
     let username = localStorage.getItem("username");
     this.axiosService.request(
       "POST",
-      "/notifikacija",
+      "/notifikacije/notifikacija",
       {
         username
       }
@@ -35,7 +35,7 @@ export class ObavestenjaComponent  implements OnInit{
 
     this.axiosService.request(
       "POST",
-      "/profil/rola",
+      "/entity/profil/rola",
       {
         username: localStorage.getItem("username")
       }

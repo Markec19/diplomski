@@ -27,3 +27,42 @@ input, select, button {
 button {
   margin-top: 10px;
 }
+
+
+
+
+
+
+
+
+.custom-ng-select {
+  width: 100%;
+}
+
+.custom-ng-select .ng-select-container {
+  height: 38px;
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  background-color: white; /* Bela pozadina */
+}
+
+.custom-ng-select .ng-dropdown-panel {
+  max-height: 200px; /* Ograničite visinu padajuće liste */
+  overflow-y: auto;  /* Dodajte vertikalno skrolovanje */
+  background-color: white; /* Bela pozadina */
+  border: 1px solid #ced4da; /* Dodajte okvir za padajuću listu */
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Blaga senka za bolju vidljivost */
+  z-index: 1000; /* Osigurajte da padajuća lista bude iznad ostalih elemenata */
+}
+
+.custom-ng-select .ng-option {
+  padding: 8px 12px; /* Podesite padding za opcije */
+}
+
+.custom-ng-select .ng-option:hover {
+  background-color: #f1f1f1; /* Svetlija boja za hover efekt */
+}
+
+
+

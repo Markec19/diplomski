@@ -38,6 +38,9 @@ public class Rezervacija {
     @Column(name = "napomena")
     private String napomena;
 
+    @Column(name = "razlog_odbijanja")
+    private String razlogOdbijanja;
+
     @Column(name = "dogadjaj")
     private String dogadjaj;
 
@@ -85,13 +88,15 @@ public class Rezervacija {
 
 
     public Rezervacija(String vremePocetka, String vremeZavrsetka, Date datumRezervacije, Date datumSlanjaZahteva, Date datumObrade, String dogadjaj,
-                       Profil profil, Profil admin, Predmet predmet, Status status, PodtipRezervacije podtipRezervacije, Sala sala, String napomena) {
+                       Profil profil, Profil admin, Predmet predmet, Status status, PodtipRezervacije podtipRezervacije, Sala sala, String napomena,
+                       String razlogOdbijanja) {
         this.vremePocetka = vremePocetka;
         this.vremeZavrsetka = vremeZavrsetka;
         this.datumRezervacije = datumRezervacije;
         this.datumSlanjaZahteva = datumSlanjaZahteva;
         this.datumObrade = datumObrade;
         this.napomena = napomena;
+        this.razlogOdbijanja = razlogOdbijanja;
         this.dogadjaj = dogadjaj;
         this.profil = profil;
         this.admin = admin;
@@ -102,7 +107,8 @@ public class Rezervacija {
     }
 
     public Rezervacija(int rezervacijaId, String vremePocetka, String vremeZavrsetka, Date datumRezervacije, Date datumSlanjaZahteva, Date datumObrade,
-                       String dogadjaj, Profil profil, Profil admin, Predmet predmet, Status status, PodtipRezervacije podtipRezervacije, Sala sala, String napomena) {
+                       String dogadjaj, Profil profil, Profil admin, Predmet predmet, Status status, PodtipRezervacije podtipRezervacije, Sala sala, String napomena,
+                       String razlogOdbijanja) {
         this.rezervacijaId = rezervacijaId;
         this.vremePocetka = vremePocetka;
         this.vremeZavrsetka = vremeZavrsetka;
@@ -110,6 +116,7 @@ public class Rezervacija {
         this.datumSlanjaZahteva = datumSlanjaZahteva;
         this.datumObrade = datumObrade;
         this.napomena = napomena;
+        this.razlogOdbijanja = razlogOdbijanja;
         this.dogadjaj = dogadjaj;
         this.profil = profil;
         this.admin = admin;
@@ -173,6 +180,14 @@ public class Rezervacija {
 
     public void setNapomena(String napomena) {
         this.napomena = napomena;
+    }
+
+    public String getRazlogOdbijanja() {
+        return razlogOdbijanja;
+    }
+
+    public void setRazlogOdbijanja(String razlogOdbijanja) {
+        this.razlogOdbijanja = razlogOdbijanja;
     }
 
     public String getDogadjaj() {

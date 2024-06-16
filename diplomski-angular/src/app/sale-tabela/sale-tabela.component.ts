@@ -3,7 +3,7 @@ import { Rezervacija } from '../models/rezervacija';
 import { Sala } from '../models/sala';
 import { AxiosService } from '../service/axios.service';
 import { Rola } from '../models/rola';
-import { Status } from '../models/status';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sale-tabela',
@@ -20,30 +20,35 @@ export class SaleTabelaComponent {
   izabranaRezervacija: Rezervacija | null = null;  
   izabraniStatus: string = 'sve';
   filteredRezervacije: Rezervacija[] = [];
+  active: boolean = false;
 
-  constructor(private axiosService: AxiosService) { }
+  constructor(private axiosService: AxiosService, private router: Router) { }
 
   ngOnInit(): void {
     let datum = localStorage.getItem('datum');
     if(datum !== null){
-      this.datum = new Date(datum);
+      this.datum = new Date(datum);     
+
+      const url = `/rezervacije/rezervacije/dan?datum=${encodeURIComponent(datum)}`;
+      this.axiosService.request(
+        'GET',
+        url, 
+        {}
+      )
+      .then((response) => {
+        this.rezervacije = this.vratiRezervacije(response.data);
+        this.filteredRezervacije = this.rezervacije;
+      })
+      .catch(error => {
+        console.error('There was an error!', error);
+      });
     }
 
     this.generateTimeSlots();
-    this.axiosService.request(
-      "GET",
-      "/rezervacije",
-      {}
-    ).then(
-      (response) => {
-        this.rezervacije = this.vratiRezervacije(response.data);
-        this.filteredRezervacije = this.rezervacije;
-      }
-    )
 
     this.axiosService.request(
       "GET",
-      "/sale",
+      "/entity/sale",
       {}
     ).then(
       (response) => this.sale = this.vratiSale(response.data),
@@ -53,13 +58,16 @@ export class SaleTabelaComponent {
 
     this.axiosService.request(
       "POST",
-      "/profil/rola",
+      "/entity/profil/rola",
       {
         username
       }
     ).then(
       (response) => this.rola = response.data,
     )
+
+    localStorage.removeItem("detalji");
+    localStorage.removeItem("forma");
   }
 
   generateTimeSlots(): void {
@@ -76,6 +84,7 @@ export class SaleTabelaComponent {
 
   onCellClick(sala: Sala, vreme: string): void {
     this.izabranaCelija = { sala, vreme };
+    this.active = true;
     if (this.isCellReserved(sala, vreme)) {
       this.izabranaRezervacija = this.getReservationForCell(sala, vreme);
     }
@@ -85,8 +94,8 @@ export class SaleTabelaComponent {
     this.izabranaCelija = null;
 
     this.axiosService.request(
-      "GET",
-      "/rezervacije",
+      "POST",
+      "/rezervacije/rezervacije/dan",
       {}
     ).then(
       (response) => this.rezervacije = this.vratiRezervacije(response.data)
@@ -143,8 +152,9 @@ export class SaleTabelaComponent {
   }
 
   vratiRezervacije(response: any): Rezervacija[] {
-    let rezervacije: Rezervacija[] = response.map((item: any) => new Rezervacija(item));
-    return this.getReservationsForDate(rezervacije, this.datum)
+    // let rezervacije: Rezervacija[] = response.map((item: any) => new Rezervacija(item));
+    // return this.getReservationsForDate(rezervacije, this.datum)
+    return response.map((item: any) => new Rezervacija(item));
   }
 
   vratiSale(response: any):Sala[] {
@@ -212,6 +222,35 @@ export class SaleTabelaComponent {
     danas.setHours(0, 0, 0, 0);
 
     return this.datum < danas;
+  }
+
+  ucitajFormu(): boolean {
+    if(this.izabranaCelija && !this.isCellReserved(this.izabranaCelija.sala, this.izabranaCelija.vreme)){
+      let detalji = localStorage.getItem('detalji')
+      if(detalji){
+        return false;
+      }
+      localStorage.setItem("forma", "true")
+      return true;
+    }
+    
+    return false;
+  }
+
+  ucitajDetalje(): boolean {
+    if(this.izabranaCelija && this.isCellReserved(this.izabranaCelija.sala, this.izabranaCelija.vreme) && this.isAdmin()){     
+      let forma = localStorage.getItem('forma')
+      if(forma){
+        return false;
+      }
+
+      localStorage.setItem("detalji", "true");
+      return true;
+    }
+    
+
+
+    return false;
   }
 
   

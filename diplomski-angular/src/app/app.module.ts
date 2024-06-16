@@ -15,6 +15,7 @@ import { SaleTabelaComponent } from './sale-tabela/sale-tabela.component';
 import { MeniComponent } from './meni/meni.component';
 import { ObavestenjaComponent } from './obavestenja/obavestenja.component';
 import { MojeRezervacijeComponent } from './moje-rezervacije/moje-rezervacije.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { MojeRezervacijeComponent } from './moje-rezervacije/moje-rezervacije.co
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    NgSelectModule,
 
     BrowserAnimationsModule,
     TimepickerModule.forRoot(),

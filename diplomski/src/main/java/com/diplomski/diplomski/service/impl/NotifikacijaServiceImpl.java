@@ -52,7 +52,7 @@ public class NotifikacijaServiceImpl implements NotifikacijaService {
 
     @SneakyThrows
     @Override
-    public List<Notifikacija> vratiSveNotifikacije(String username) {
+    public List<Notifikacija> vratiSveNotifikacijeKorisnika(String username) {
         ProfilDto profilDto = profilService.findByUsername(username);
         Profil profil = profilService.findById(profilDto.getProfilId());
 

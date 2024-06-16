@@ -10,5 +10,5 @@ import java.util.List;
 public interface NotifikacijaService extends EntityService<Notifikacija> {
 
     Notifikacija sacuvajNotifikaciju(Notifikacija notifikacija) throws Exception;
-    List<Notifikacija> vratiSveNotifikacije(String username);
+    List<Notifikacija> vratiSveNotifikacijeKorisnika(String username);
 }

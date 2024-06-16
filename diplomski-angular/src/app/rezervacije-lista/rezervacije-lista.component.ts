@@ -17,13 +17,16 @@ export class RezervacijeListaComponent implements OnInit{
   statusi: Status[] = [];
   @Input() rola: Rola | null = null;
   trenutniDatum: Date = new Date();
+  razlogOdbijanja: string = '';
+  showModal: boolean = false;
+  
  
   constructor(private axiosService: AxiosService, private router: Router){}
 
   ngOnInit(): void {
     this.axiosService.request(
       "GET",
-      "/statusi",
+      "/entity/statusi",
       {}
     ).then(
       (response) => this.statusi = this.vratiStatuse(response.data)
@@ -31,7 +34,7 @@ export class RezervacijeListaComponent implements OnInit{
 
     this.axiosService.request(
       "POST",
-      "/profil/rola",
+      "/entity/profil/rola",
       {
         username: localStorage.getItem("username")
       }
@@ -72,20 +75,56 @@ export class RezervacijeListaComponent implements OnInit{
         rezervacija.status = status;
         rezervacija.datumObrade = new Date();
       }
+      if (br === 2) {
+        rezervacija.razlogOdbijanja = this.razlogOdbijanja; 
+      }
       let username = localStorage.getItem("username")
   
-      this.axiosService.request(
-        "PUT",
-        "/obradi/rezervacija",
-        {
-  
-          rezervacija: rezervacija,
-          username: username
-        }
-      ).then(response => {
-        this.router.navigate(['/sale']);
-      })
+      if(br === 1 && username){
+        this.prihvatiRezervaciju(rezervacija, username)
+      } else if(br === 2 && username){
+        this.odbijRezervaciju(rezervacija, username)
+      }
     }
+  }
+
+  prihvatiRezervaciju(rezervacija: Rezervacija, username: string) {
+    this.axiosService.request(
+      "PUT",
+      "/rezervacije/prihvati/rezervacija",
+      {
+        rezervacija: rezervacija,
+        username: username
+      }
+    ).then(response => {
+      location.reload()
+    })
+  }
+
+  odbijRezervaciju(rezervacija: Rezervacija, username: string) {
+    this.axiosService.request(
+      "PUT",
+      "/rezervacije/odbij/rezervacija",
+      {
+        rezervacija: rezervacija,
+        username: username
+      }
+    ).then(response => {
+      location.reload()
+    })
+  }
+
+  submitRazlogOdbijanja() {
+    this.obradiZahtev(2);
+    this.zatvoriModal();
+  }
+
+  prikaziModal() {
+    this.showModal = true;
+  }
+
+  zatvoriModal() {
+    this.showModal = false;
   }
 
 }

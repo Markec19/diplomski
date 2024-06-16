@@ -49,8 +49,8 @@
             </tbody>
           </table>   
         </div>
-        <app-rezervacija *ngIf="izabranaCelija && !isCellReserved(izabranaCelija.sala, izabranaCelija.vreme)" [sala]="izabranaCelija.sala" [vremePocetka]="izabranaCelija.vreme" (formClose)="closeForm()"></app-rezervacija>
-        <app-rezervacije-lista class="overlay" *ngIf="izabranaCelija && isCellReserved(izabranaCelija.sala, izabranaCelija.vreme) && isAdmin()" [rezervacija]="izabranaRezervacija" [rola]="rola"></app-rezervacije-lista>
+        <app-rezervacija *ngIf="ucitajFormu() && izabranaCelija" [sala]="izabranaCelija.sala" [vremePocetka]="izabranaCelija.vreme" (formClose)="closeForm()"></app-rezervacija>
+        <app-rezervacije-lista class="overlay" *ngIf="izabranaCelija && ucitajDetalje()" [rezervacija]="izabranaRezervacija" [rola]="rola"></app-rezervacije-lista>
         
       
       

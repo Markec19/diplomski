@@ -18,7 +18,7 @@ export class MeniComponent implements OnInit {
     let username = localStorage.getItem("username");
     this.axiosService.request(
       "POST",
-      "/notifikacija",
+      "/notifikacije/notifikacija",
       {
         username
       }

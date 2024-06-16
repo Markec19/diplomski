@@ -48,14 +48,38 @@
                     <td>Status:</td>
                     <td>{{ rezervacija?.status?.status }}</td>
                 </tr>
+                <tr *ngIf="rezervacija?.status?.status == 'odbijena'">
+                    <td>Razlog odbijanja:</td>
+                    <td>{{ rezervacija?.razlogOdbijanja }}</td>
+                </tr>
             </table>
         </div>
         <div class="button-container">
             <div *ngIf="rola !== null && rola.rola === 'admin' && rezervacija?.status?.status === 'cekanje'" class="obrada">
                 <button (click)="obradiZahtev(1)" class="btn btn-primary">Prihvati</button>
-                <button (click)="obradiZahtev(2)" class="btn btn-danger">Odbij</button>
+                <button (click)="prikaziModal()" class="btn btn-danger">Odbij</button>
             </div>
             <button class="btn btn-primary" (click)="zatvoriProzor()">Zatvori</button>
         </div>
     </div>
 </div>
+
+<div class="modal" [ngStyle]="{ 'display': showModal ? 'flex' : 'none' }" id="rejectReasonModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Razlog za odbijanje</h5>
+          <button type="button" class="close" (click)="zatvoriModal()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <textarea [(ngModel)]="razlogOdbijanja" class="form-control" placeholder="Unesite razlog za odbijanje"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="submitRazlogOdbijanja()">Potvrdi</button>
+          <button type="button" class="btn btn-secondary" (click)="zatvoriModal()">Zatvori</button>
+        </div>
+      </div>
+    </div>
+  </div>

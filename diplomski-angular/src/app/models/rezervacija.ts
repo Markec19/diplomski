@@ -12,7 +12,8 @@ export class Rezervacija {
     datumSlanjaZahteva: Date = new Date();
     datumObrade: Date | null= null;
     napomena: string | null = null;
-    dogadjaj: string | null = null;   
+    dogadjaj: string | null = null;
+    razlogOdbijanja: string | null = null;
     profil: Profil | null = null;
     admin: Profil | null = null;
     predmet: Predmet | null = null;    
@@ -28,6 +29,7 @@ export class Rezervacija {
             this.datumRezervacije = new Date(data.datumRezervacije)
             this.datumSlanjaZahteva = new Date(data.datumSlanjaZahteva);
             this.datumObrade = new Date(data.datumObrade);
+            this.razlogOdbijanja = data.razlogOdbijanja;
             this.dogadjaj = data.dogadjaj;       
             
             if (data.profil) {

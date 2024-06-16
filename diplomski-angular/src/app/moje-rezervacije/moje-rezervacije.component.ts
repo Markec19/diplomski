@@ -24,7 +24,7 @@ export class MojeRezervacijeComponent implements OnInit {
     let username = localStorage.getItem('username');
     this.axiosService.request(
       "POST",
-      "/rezervacije/korisnik",
+      "/rezervacije/rezervacije/korisnik",
       {
         username
       }
@@ -37,7 +37,7 @@ export class MojeRezervacijeComponent implements OnInit {
 
     this.axiosService.request(
       "POST",
-      "/profil/rola",
+      "/entity/profil/rola",
       {
         username
       }
@@ -63,7 +63,7 @@ export class MojeRezervacijeComponent implements OnInit {
   odjaviRezervaciju(rezervacija: Rezervacija | null) {
     this.axiosService.request(
       "PUT",
-      "/odjavi/rezervacija",
+      "/rezervacije/odjavi/rezervacija",
       {
         rezervacija
       }

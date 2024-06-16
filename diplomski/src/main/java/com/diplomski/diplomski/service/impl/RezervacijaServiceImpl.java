@@ -11,7 +11,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,6 +75,7 @@ public class RezervacijaServiceImpl implements RezervacijaService {
     public Rezervacija obradiRezervaciju(RezervacijaDto rezervacijaDto) throws Exception {
         ProfilDto profilDto = profilService.findByUsername(rezervacijaDto.getUsername());
         Profil profil = profilService.findById(profilDto.getProfilId());
+        Status status = rezervacijaDto.getRezervacija().getStatus();
 
         if(profil.getRola().getRola().equals("admin")){
             Rezervacija rezervacija = findById(rezervacijaDto.getRezervacija().getrezervacijaId());
@@ -82,8 +83,16 @@ public class RezervacijaServiceImpl implements RezervacijaService {
             rezervacija.setAdmin(profil);
 
             if(rezervacija.getStatus().getStatus().equals("cekanje")){
-                rezervacija.setStatus(rezervacijaDto.getRezervacija().getStatus());
-                return repository.save(rezervacija);
+                rezervacija.setStatus(status);
+
+                if(status.getStatus().equals("prihvacena"))
+                    return repository.save(rezervacija);
+
+                if(status.getStatus().equals("odbijena") && rezervacijaDto.getRezervacija().getRazlogOdbijanja() != null){
+                    rezervacija.setRazlogOdbijanja(rezervacijaDto.getRezervacija().getRazlogOdbijanja());
+                    return repository.save(rezervacija);
+                } else throw new Exception("Nije unet razlog odbijanja!");
+
             } else throw new Exception("Rezervacija je vec obradjena!");
         } else {
             throw new Exception("Korisnik ne moze da obradjuje rezervacije!");
@@ -108,5 +117,13 @@ public class RezervacijaServiceImpl implements RezervacijaService {
         rezervacija.setStatus((Status) statusService.findById(4));
 
         return repository.save(rezervacija);
+    }
+
+    @Override
+    public List<Rezervacija> vratiRezervacijeZaDan(Date datum) throws Exception {
+        TypedQuery<Rezervacija> query = entityManager.createQuery("SELECT r FROM Rezervacija r " +
+                "WHERE r.datumRezervacije = :datum", Rezervacija.class);
+        query.setParameter("datum", datum);
+        return query.getResultList();
     }
 }

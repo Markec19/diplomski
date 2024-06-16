@@ -35,7 +35,8 @@ export class LoginComponent implements OnInit{
     if(this.loginForm.valid){
       this.axiosService.request(
         "POST",
-        "/login",
+        // "/login",
+        "/auth/login",
         {
           username: username,
           password: password        

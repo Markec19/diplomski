@@ -51,7 +51,7 @@ export class RezervacijaFormComponent implements OnInit {
 
     this.axiosService.request(
       "GET",
-      "/predmeti",
+      "/entity/predmeti",
       {}
     ).then(
       (response) => this.predmeti = this.vratiPredmete(response.data)
@@ -59,7 +59,7 @@ export class RezervacijaFormComponent implements OnInit {
   
     this.axiosService.request(
       "GET",
-      "/tip_rezervacije",
+      "/entity/tip_rezervacije",
       {}
     ).then(
       (response) => this.tipRezervacije = this.vratiTipRezervacije(response.data)
@@ -67,7 +67,7 @@ export class RezervacijaFormComponent implements OnInit {
   
     this.axiosService.request(
       "GET",
-      "/podtip_rezervacije",
+      "/entity/podtip_rezervacije",
       {}
     ).then(
       (response) => this.podtipRezervacije = this.vratiPodtip(response.data)
@@ -140,7 +140,7 @@ export class RezervacijaFormComponent implements OnInit {
 
     this.axiosService.request(
       "POST",
-      "/sacuvaj/rezervacija",
+      "/rezervacije/sacuvaj/rezervacija",
       {      
         rezervacija: rezervacija,
         username: username
