@@ -1,5 +1,5 @@
 <div class="error" *ngIf="!loginSuccess">
-    Login je neuspesan! Korisnicko ime ili sifra su neispravni!
+    Login je neuspesan! Korisnicko ime ili sifra su netačni!
 </div>
 
 <div class="login">
@@ -9,14 +9,14 @@
         <form [formGroup]="loginForm" (ngSubmit)="login()">
 
             <div class="input">
-                <input type="text" formControlName="username" placeholder="username" id="username">
+                <input type="text" formControlName="username" placeholder="username *" id="username">
                 <div *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
                     Korisnicko ime nije uneto
                 </div>
             </div>
         
             <div class="input">
-                <input type="password" formControlName="password" placeholder="password" id="password">
+                <input type="password" formControlName="password" placeholder="password *" id="password">
                 <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
                     Šifra nije uneta
                 </div>

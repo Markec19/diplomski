@@ -43,6 +43,12 @@
   border-color: #4CAF50;
 }
 
+.prazno {
+    text-align: center;
+    font-size: 16px;
+    padding: 10px;
+}
+
 
 h2 {
     text-align: center;

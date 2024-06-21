@@ -10,12 +10,12 @@ import { RezervacijaFormComponent } from './rezervacija-forma/rezervacija-form.c
 import { RezervacijeListaComponent } from './rezervacije-lista/rezervacije-lista.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { SaleTabelaComponent } from './sale-tabela/sale-tabela.component';
 import { MeniComponent } from './meni/meni.component';
 import { ObavestenjaComponent } from './obavestenja/obavestenja.component';
 import { MojeRezervacijeComponent } from './moje-rezervacije/moje-rezervacije.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -37,7 +37,12 @@ import { NgSelectModule } from '@ng-select/ng-select';
     NgSelectModule,
 
     BrowserAnimationsModule,
-    TimepickerModule.forRoot(),
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-top-right', 
+      preventDuplicates: true,
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]

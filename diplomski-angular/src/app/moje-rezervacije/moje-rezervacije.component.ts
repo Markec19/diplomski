@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Rezervacija } from '../models/rezervacija';
 import { AxiosService } from '../service/axios.service';
 import { Rola } from '../models/rola';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-moje-rezervacije',
@@ -18,7 +20,7 @@ export class MojeRezervacijeComponent implements OnInit {
   rola: Rola | null = null;
   izabranaRezervacija: Rezervacija | null = null;
 
-  constructor(private axiosService: AxiosService) { }
+  constructor(private axiosService: AxiosService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     let username = localStorage.getItem('username');
@@ -69,12 +71,24 @@ export class MojeRezervacijeComponent implements OnInit {
       }
     ).then(
       (response) => {
-        // this.rezervacije = this.vratiRezervacije(response.data);
-        // this.filtriraneRezervacije = this.rezervacije;
-        // this.zatvoriModal();
-        location.reload();
+
+        this.toastr.success('Odjavljivanje rezervacije je uspešno!', '', {
+          positionClass: 'toast-top-center',
+          timeOut: 3000
+        });
+        //location.reload();
       }
-    );
+    ).catch(response => {
+      this.toastr.error('Sistem ne može da zapamti rezervaciju!', '', {
+        positionClass: 'toast-top-center',
+        timeOut: 3000
+      });
+    });
+
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]);
+    });
   }
 
   odjavljena(rezervacija: Rezervacija): boolean {

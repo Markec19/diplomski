@@ -42,12 +42,18 @@ public class RezervacijaController {
     }
 
     @PostMapping("/sacuvaj/rezervacija")
-    public Rezervacija sacuvajRezervaciju(@RequestBody RezervacijaDto rezervacija) throws Exception {
+    public Rezervacija sacuvajRezervaciju(@RequestBody RezervacijaDto rezervacija)  {
         System.out.println("Objekat je sacuvan");
 
-        Rezervacija rez = rezervacijaService.dodajRezervaciju(rezervacija);
-        NotifikacijaController.sacuvajNotifikaciju(rez);
-        return rez;
+        Rezervacija rez = null;
+        try {
+            rez = rezervacijaService.dodajRezervaciju(rezervacija);
+            NotifikacijaController.sacuvajNotifikaciju(rez);
+            return rez;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @PutMapping("/prihvati/rezervacija")

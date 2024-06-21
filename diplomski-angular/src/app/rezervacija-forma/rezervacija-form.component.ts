@@ -7,6 +7,7 @@ import { TipRezervacije } from '../models/tip-rezervacije';
 import { PodtipRezervacije } from '../models/podtip-rezervacije';
 import { Rezervacija } from '../models/rezervacija';
 import { AxiosService } from '../service/axios.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-rezervacija',
@@ -32,12 +33,14 @@ export class RezervacijaFormComponent implements OnInit {
   rezervacijeSale: Rezervacija[] = [];
   timeSlots: string[] = [];
   kreiranaRezervacija: Rezervacija | null = null;
+  izabraniPredmet: Predmet | null = null;
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private axiosService: AxiosService) { }
+  constructor(private formBuilder: FormBuilder, private router: Router, private axiosService: AxiosService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.rezervacijaForm = this.formBuilder.group({
-      predmet: ['', Validators.required],
+      // predmet: ['', Validators.required],
+      izabraniPredmetId: ['', Validators.required],
       vremePocetka: [this.vremePocetka, Validators.required],
       vremeZavrsetka: ['', Validators.required],
       tipRezervacije: ['', Validators.required],
@@ -145,11 +148,31 @@ export class RezervacijaFormComponent implements OnInit {
         rezervacija: rezervacija,
         username: username
       }
-    ).then(response => {
-        this.router.navigate(['/kalendar']);
-      })
+    ).then(response => {        
+        this.toastr.success('Rezervacija je uspesno kreirana!', '', {
+          positionClass: 'toast-top-center',
+          timeOut: 3000
+        });
+        this.toastr.success('Notifikacija je uspesno kreirana!', '', {
+          positionClass: 'toast-top-center',
+          timeOut: 3000
+        });
+    }).catch(error => {
+      this.toastr.error('Sistem ne moze da kreira rezervaciju!', '', {
+        positionClass: 'toast-top-center',
+        timeOut: 3000
+      });
+      this.toastr.error('Sistem ne moze da kreira notifikaciju!', '', {
+        positionClass: 'toast-top-center',
+        timeOut: 3000
+      });
+    })
     this.formClose.emit();
-    location.reload();
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]);
+    });
+    
   }
 
   onCancel(): void {
@@ -166,5 +189,11 @@ export class RezervacijaFormComponent implements OnInit {
 
   vratiPodtip(response: any): PodtipRezervacije[] {
     return response.map((item: any) => new PodtipRezervacije(item));
+  }
+
+
+
+  onSelectionChange(event: any) {
+    console.log(this.izabraniPredmetId)
   }
 }

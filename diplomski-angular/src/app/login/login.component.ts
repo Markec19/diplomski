@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AxiosService } from '../service/axios.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,7 @@ export class LoginComponent implements OnInit{
 
   loginSuccess: boolean = true;
 
-  constructor(private formBuilder: FormBuilder, private axiosService: AxiosService, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private axiosService: AxiosService, private router: Router, private toastr: ToastrService) { }
   ngOnInit(): void {
     if(this.axiosService.getAuthToken() !== null){
       localStorage.removeItem('auth_token');
@@ -44,6 +45,10 @@ export class LoginComponent implements OnInit{
       ).then(response => {
         this.axiosService.setAuthToken(response.data.token);
         localStorage.setItem("username", username);
+        this.toastr.success('Login je uspešan!', '', {
+          positionClass: 'toast-top-center',
+          timeOut: 3000
+        });
         this.router.navigate(['/pocetna']);
       })
       .catch(error => {

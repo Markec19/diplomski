@@ -4,6 +4,7 @@ import { AxiosService } from '../service/axios.service';
 import { Status } from '../models/status';
 import { Router } from '@angular/router';
 import { Rola } from '../models/rola';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-rezervacije-lista',
@@ -21,7 +22,7 @@ export class RezervacijeListaComponent implements OnInit{
   showModal: boolean = false;
   
  
-  constructor(private axiosService: AxiosService, private router: Router){}
+  constructor(private axiosService: AxiosService, private router: Router, private toastr: ToastrService){}
 
   ngOnInit(): void {
     this.axiosService.request(
@@ -85,6 +86,7 @@ export class RezervacijeListaComponent implements OnInit{
       } else if(br === 2 && username){
         this.odbijRezervaciju(rezervacija, username)
       }
+      this.zatvoriModal()
     }
   }
 
@@ -97,7 +99,31 @@ export class RezervacijeListaComponent implements OnInit{
         username: username
       }
     ).then(response => {
-      location.reload()
+      this.toastr.success('Rezervacija je prihvaćena!', '', {
+        positionClass: 'toast-top-center',
+        timeOut: 3000
+      });
+      this.toastr.success('Notifikacija je uspesno zapamćena!', '', {
+        positionClass: 'toast-top-center',
+        timeOut: 3000
+      });
+      this.toastr.success('Mejl je uspesno poslat!', '', {
+        positionClass: 'toast-top-center',
+        timeOut: 3000
+      });
+    }).catch(error => {
+      this.toastr.success('Sistem ne može da zapamti rezervaciju!', '', {
+        positionClass: 'toast-top-center',
+        timeOut: 3000
+      });
+      this.toastr.success('Sistem ne može da zapamti notifikaciju!', '', {
+        positionClass: 'toast-top-center',
+        timeOut: 3000
+      });
+      this.toastr.success('Sistem ne može da pošalje mejl!', '', {
+        positionClass: 'toast-top-center',
+        timeOut: 3000
+      });
     })
   }
 
@@ -110,7 +136,23 @@ export class RezervacijeListaComponent implements OnInit{
         username: username
       }
     ).then(response => {
-      location.reload()
+      this.toastr.success('Rezervacija je odbijena!', '', {
+        positionClass: 'toast-top-center',
+        timeOut: 3000
+      });
+      this.toastr.success('Notifikacija je uspesno zapamćena!', '', {
+        positionClass: 'toast-top-center',
+        timeOut: 3000
+      });
+    }).catch(error => {
+      this.toastr.error('Sistem ne može da zapamti rezervaciju!', '', {
+        positionClass: 'toast-top-center',
+        timeOut: 3000
+      });
+      this.toastr.error('Sistem ne može da zapamti notifikaciju!', '', {
+        positionClass: 'toast-top-center',
+        timeOut: 3000
+      });
     })
   }
 
@@ -125,6 +167,11 @@ export class RezervacijeListaComponent implements OnInit{
 
   zatvoriModal() {
     this.showModal = false;
+
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]);
+    });
   }
 
 }

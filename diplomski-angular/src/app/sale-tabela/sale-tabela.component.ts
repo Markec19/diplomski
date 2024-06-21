@@ -4,6 +4,7 @@ import { Sala } from '../models/sala';
 import { AxiosService } from '../service/axios.service';
 import { Rola } from '../models/rola';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sale-tabela',
@@ -22,7 +23,7 @@ export class SaleTabelaComponent {
   filteredRezervacije: Rezervacija[] = [];
   active: boolean = false;
 
-  constructor(private axiosService: AxiosService, private router: Router) { }
+  constructor(private axiosService: AxiosService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     let datum = localStorage.getItem('datum');
@@ -41,6 +42,10 @@ export class SaleTabelaComponent {
       })
       .catch(error => {
         console.error('There was an error!', error);
+        this.toastr.error('Sistem ne može da nađe rezervacije!', '', {
+          positionClass: 'toast-top-center',
+          timeOut: 3000
+        });
       });
     }
 
@@ -93,13 +98,10 @@ export class SaleTabelaComponent {
   closeForm(): void {
     this.izabranaCelija = null;
 
-    this.axiosService.request(
-      "POST",
-      "/rezervacije/rezervacije/dan",
-      {}
-    ).then(
-      (response) => this.rezervacije = this.vratiRezervacije(response.data)
-    )   
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]);
+    });
   }
 
   getReservationForCell(sala: Sala, vreme: string): Rezervacija | null {
@@ -246,13 +248,10 @@ export class SaleTabelaComponent {
 
       localStorage.setItem("detalji", "true");
       return true;
-    }
-    
-
+    }  
 
     return false;
   }
 
-  
 
 }

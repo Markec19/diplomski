@@ -5,7 +5,7 @@
       
       
         <div class="sale">
-          Rezervacije za {{datum | date:'yyyy-MM-dd'}}
+          <!-- Rezervacije za {{datum | date:'yyyy-MM-dd'}} -->
       
           <div *ngIf="isAdmin()" class="filter-container">
             <label for="statusFilter">Filtriraj po statusu:</label>
@@ -51,6 +51,7 @@
         </div>
         <app-rezervacija *ngIf="ucitajFormu() && izabranaCelija" [sala]="izabranaCelija.sala" [vremePocetka]="izabranaCelija.vreme" (formClose)="closeForm()"></app-rezervacija>
         <app-rezervacije-lista class="overlay" *ngIf="izabranaCelija && ucitajDetalje()" [rezervacija]="izabranaRezervacija" [rola]="rola"></app-rezervacije-lista>
+
         
       
       
