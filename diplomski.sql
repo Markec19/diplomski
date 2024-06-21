@@ -22,24 +22,35 @@ CREATE TABLE `notifikacija` (
   PRIMARY KEY (`id`),
   KEY `rezervacija_id` (`rezervacija_id`),
   CONSTRAINT `notifikacija_ibfk_1` FOREIGN KEY (`rezervacija_id`) REFERENCES `rezervacija` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `notifikacija` */
 
 insert  into `notifikacija`(`id`,`notifikacija`,`rezervacija_id`) values 
-(1,'\"Rezervacija je : prihvacena\"',39),
 (5,'Rezervacija je : odbijena',86),
 (7,'Rezervacija je : prihvacena',88),
 (10,'Rezervacija je : prihvacena',91),
 (11,'Rezervacija je : odbijena',92),
-(13,'Kreirana je nova rezervacija za dan: 2024-05-31, u sali: 005',94),
-(14,'Kreirana je nova rezervacija za dan: 2024-05-31, u sali: 004',95),
-(15,'Kreirana je nova rezervacija za dan: 2024-05-31, u sali: 007',96),
-(18,'Kreirana je nova rezervacija za dan: 2024-05-31, u sali: 007',99),
+(13,'Rezervacija je : prihvacena',94),
+(14,'Rezervacija je : prihvacena',95),
+(15,'Rezervacija je : prihvacena',96),
+(18,'Rezervacija je : prihvacena',99),
 (19,'Rezervacija je : prihvacena',100),
-(20,'Rezervacija je : odbijena',101),
+(20,'Rezervacija je : prihvacena',101),
 (21,'Kreirana je nova rezervacija za dan: 2024-05-28, u sali: 010',102),
-(22,'Kreirana je nova rezervacija za dan: 2024-05-28, u sali: 004',103);
+(22,'Rezervacija je : prihvacena',103),
+(27,'Kreirana je nova rezervacija za dan: 2024-05-31, u sali: 010',108),
+(28,'Rezervacija je : prihvacena',109),
+(35,'Kreirana je nova rezervacija za dan: 2024-06-01, u sali: 004',116),
+(38,'Kreirana je nova rezervacija za dan: 2024-06-27, u sali: 010',119),
+(39,'Kreirana je nova rezervacija za dan: 2024-06-06, u sali: 003',120),
+(41,'Kreirana je nova rezervacija za dan: 2024-06-13, u sali: 010',122),
+(42,'Rezervacija je : odbijena',123),
+(43,'Rezervacija je : prihvacena',124),
+(44,'Rezervacija je : prihvacena',125),
+(50,'Rezervacija je : prihvacena',131),
+(55,'Rezervacija je : prihvacena',136),
+(72,'Kreirana je nova rezervacija za dan: 2024-06-16, u sali: 003',153);
 
 /*Table structure for table `podtip_rezervacije` */
 
@@ -97,7 +108,7 @@ CREATE TABLE `profil` (
   KEY `rola_id` (`rola_id`),
   CONSTRAINT `profil_ibfk_1` FOREIGN KEY (`zaposleni_id`) REFERENCES `zaposleni` (`id`),
   CONSTRAINT `profil_ibfk_2` FOREIGN KEY (`rola_id`) REFERENCES `rola` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `profil` */
 
@@ -105,7 +116,9 @@ insert  into `profil`(`id`,`username`,`password`,`zaposleni_id`,`rola_id`) value
 (2,'test','$2a$10$VM8qc9.qivlvScs4lW3l9uQIWgbU8W/xwEzg8Guf3w7jWu/vDh4jy',1,1),
 (3,'admin','$2a$10$exo3FAmE9NL1s2F9HNaRg.tNpWSAMPvPITTl5qtY2J.wIaTp05n4.',2,2),
 (6,'test1','$2a$10$VM8qc9.qivlvScs4lW3l9uQIWgbU8W/xwEzg8Guf3w7jWu/vDh4jy',3,1),
-(7,'admin1','$2a$10$exo3FAmE9NL1s2F9HNaRg.tNpWSAMPvPITTl5qtY2J.wIaTp05n4.',4,2);
+(7,'admin1','$2a$10$exo3FAmE9NL1s2F9HNaRg.tNpWSAMPvPITTl5qtY2J.wIaTp05n4.',4,2),
+(9,'petar.petrovic','$2a$10$.1y7/q7Nf08RPFANLt8Yo.aTIL6EiMOu4nfxnT7P7vVFb8nAIRRI6',5,1),
+(10,'ilija.ilic','$2a$10$8Pv0orao2nLAY0su1h3bwedLQGy9q2kJQxsS2vVs5d3ZLFps13PcO',6,2);
 
 /*Table structure for table `rezervacija` */
 
@@ -116,6 +129,8 @@ CREATE TABLE `rezervacija` (
   `datum_rezervacije` date DEFAULT NULL,
   `datum_slanja_zahteva` date DEFAULT NULL,
   `datum_obrade` date DEFAULT NULL,
+  `napomena` varchar(200) DEFAULT NULL,
+  `razlog_odbijanja` varchar(200) DEFAULT NULL,
   `dogadjaj` varchar(100) DEFAULT NULL,
   `sala_id` int(11) DEFAULT NULL,
   `predmet_id` int(11) DEFAULT NULL,
@@ -136,29 +151,40 @@ CREATE TABLE `rezervacija` (
   CONSTRAINT `rezervacija_ibfk_2` FOREIGN KEY (`predmet_id`) REFERENCES `predmet` (`id`),
   CONSTRAINT `rezervacija_ibfk_4` FOREIGN KEY (`podtip_id`) REFERENCES `podtip_rezervacije` (`id`),
   CONSTRAINT `rezervacija_ibfk_5` FOREIGN KEY (`status_id`) REFERENCES `status` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=157 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `rezervacija` */
 
-insert  into `rezervacija`(`id`,`vreme_pocetka`,`vreme_zavrsetka`,`datum_rezervacije`,`datum_slanja_zahteva`,`datum_obrade`,`dogadjaj`,`sala_id`,`predmet_id`,`podtip_id`,`status_id`,`korisnik_id`,`admin_id`) values 
-(39,'9:00','11:00','2024-04-30','2024-04-25','2024-04-30',NULL,5,6,5,2,2,3),
-(46,'09:00','11:00','2024-04-29','2024-04-29','2024-04-29',NULL,4,2,3,2,2,3),
-(50,'11:00','15:00','2024-04-29','2024-04-29','2024-04-30',NULL,1,1,5,3,2,3),
-(52,'13:00','15:00','2024-04-29','2024-04-29','2024-04-29',NULL,5,6,5,1,2,NULL),
-(77,'10:00','12:00','2024-05-01','2024-05-02',NULL,NULL,1,1,1,1,2,NULL),
-(85,'10:15','11:30','2024-05-26','2024-05-26',NULL,NULL,10,8,6,1,2,NULL),
-(86,'09:00','10:30','2024-05-27','2024-05-27','2024-05-27',NULL,4,7,2,3,2,3),
-(88,'10:00','12:00','2024-05-27','2024-05-27','2024-05-28',NULL,10,6,3,2,2,3),
-(91,'08:00','09:15','2024-05-29','2024-05-27','2024-05-27',NULL,9,2,4,2,2,3),
-(92,'09:15','10:00','2024-05-29','2024-05-27','2024-05-28',NULL,11,4,2,3,2,3),
-(94,'09:00','10:00','2024-05-31','2024-05-28',NULL,NULL,5,3,6,1,2,NULL),
-(95,'09:45','11:00','2024-05-31','2024-05-28',NULL,NULL,11,1,1,1,2,NULL),
-(96,'10:30','11:30','2024-05-31','2024-05-28',NULL,NULL,12,9,1,1,2,NULL),
-(99,'11:45','12:30','2024-05-31','2024-05-28',NULL,'Seminar',12,NULL,15,1,2,NULL),
-(100,'08:00','10:00','2024-05-28','2024-05-28','2024-05-28',NULL,4,1,2,2,2,3),
-(101,'09:45','11:00','2024-05-28','2024-05-28','2024-05-28','Seminar',5,NULL,15,3,2,3),
-(102,'09:15','10:45','2024-05-28','2024-05-28',NULL,NULL,10,7,1,1,2,NULL),
-(103,'10:45','11:15','2024-05-28','2024-05-28',NULL,'Seminar',11,NULL,15,1,2,NULL);
+insert  into `rezervacija`(`id`,`vreme_pocetka`,`vreme_zavrsetka`,`datum_rezervacije`,`datum_slanja_zahteva`,`datum_obrade`,`napomena`,`razlog_odbijanja`,`dogadjaj`,`sala_id`,`predmet_id`,`podtip_id`,`status_id`,`korisnik_id`,`admin_id`) values 
+(46,'09:00','11:00','2024-04-29','2024-04-29','2024-04-29',NULL,NULL,NULL,4,2,3,4,2,3),
+(50,'11:00','15:00','2024-04-29','2024-04-29','2024-04-30',NULL,NULL,NULL,1,1,5,4,2,3),
+(52,'13:00','15:00','2024-04-29','2024-04-29','2024-04-29',NULL,NULL,NULL,5,6,5,4,2,NULL),
+(77,'10:00','12:00','2024-05-01','2024-05-02',NULL,NULL,NULL,NULL,1,1,1,1,2,NULL),
+(85,'10:15','11:30','2024-05-26','2024-05-26',NULL,NULL,NULL,NULL,10,8,6,1,2,NULL),
+(86,'09:00','10:30','2024-05-27','2024-05-27','2024-05-27',NULL,NULL,NULL,4,7,2,3,2,3),
+(88,'10:00','12:00','2024-05-27','2024-05-27','2024-05-28',NULL,NULL,NULL,10,6,3,2,2,3),
+(91,'08:00','09:15','2024-05-29','2024-05-27','2024-05-27',NULL,NULL,NULL,9,2,4,2,2,3),
+(92,'09:15','10:00','2024-05-29','2024-05-27','2024-05-28',NULL,NULL,NULL,11,4,2,3,2,3),
+(94,'09:00','10:00','2024-05-31','2024-05-28','2024-06-02',NULL,NULL,NULL,5,3,6,2,2,3),
+(95,'09:45','11:00','2024-05-31','2024-05-28','2024-06-02',NULL,NULL,NULL,11,1,1,1,2,3),
+(96,'10:30','11:30','2024-05-31','2024-05-28','2024-06-03',NULL,NULL,NULL,12,9,1,2,2,3),
+(99,'11:45','12:30','2024-05-31','2024-05-28','2024-06-03',NULL,NULL,'Seminar',12,NULL,15,1,2,3),
+(100,'08:00','10:00','2024-05-28','2024-05-28','2024-05-28',NULL,NULL,NULL,4,1,2,2,2,3),
+(101,'09:45','11:00','2024-05-28','2024-05-28','2024-06-02',NULL,NULL,'Seminar',5,NULL,15,2,2,3),
+(102,'09:15','10:45','2024-05-28','2024-05-28',NULL,NULL,NULL,NULL,10,7,1,1,2,NULL),
+(103,'10:45','11:15','2024-05-28','2024-05-28','2024-06-02',NULL,NULL,'Seminar',11,NULL,15,2,2,3),
+(108,'09:00','10:00','2024-05-31','2024-05-29','2024-05-29',NULL,NULL,NULL,10,1,2,4,3,3),
+(109,'08:30','10:00','2024-05-31','2024-05-29','2024-06-03',NULL,NULL,NULL,4,3,3,2,2,3),
+(116,'09:15','11:15','2024-06-01','2024-06-03',NULL,NULL,NULL,NULL,11,2,2,1,2,NULL),
+(119,'08:30','11:15','2024-06-27','2024-06-04',NULL,NULL,NULL,NULL,10,3,6,1,2,NULL),
+(120,'09:15','11:15','2024-06-06','2024-06-06',NULL,'Vezbe iz matematike 1',NULL,NULL,9,3,5,1,2,NULL),
+(122,'11:00','12:00','2024-06-13','2024-06-13','2024-06-13','',NULL,'Seminar',10,NULL,15,2,3,3),
+(123,'09:00','10:00','2024-06-13','2024-06-13','2024-06-13','','','Seminar',5,NULL,15,1,2,3),
+(124,'10:15','11:15','2024-06-14','2024-06-14','2024-06-14','','','Seminar',5,NULL,15,2,3,3),
+(125,'10:30','11:30','2024-06-15','2024-06-15','2024-06-15','','Odbijena','Seminar',9,NULL,15,2,2,3),
+(131,'09:45','11:45','2024-06-16','2024-06-16','2024-06-16','',NULL,NULL,10,1,5,2,2,10),
+(136,'10:45','11:45','2024-06-16','2024-06-16','2024-06-16','',NULL,NULL,4,2,6,1,2,10),
+(153,'10:45','12:15','2024-06-16','2024-06-16','2024-06-16','',NULL,NULL,9,8,2,2,10,10);
 
 /*Table structure for table `rola` */
 
@@ -203,14 +229,15 @@ CREATE TABLE `status` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `status` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `status` */
 
 insert  into `status`(`id`,`status`) values 
 (1,'cekanje'),
 (2,'prihvacena'),
-(3,'odbijena');
+(3,'odbijena'),
+(4,'odjavljena');
 
 /*Table structure for table `tip_rezervacije` */
 
@@ -249,7 +276,7 @@ CREATE TABLE `zaposleni` (
   `ime` varchar(20) NOT NULL,
   `prezime` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `zaposleni` */
 
@@ -257,7 +284,9 @@ insert  into `zaposleni`(`id`,`ime`,`prezime`) values
 (1,'Test','Test'),
 (2,'Admin','Admin'),
 (3,'Test1','Test1'),
-(4,'Admin1','Admin1');
+(4,'Admin1','Admin1'),
+(5,'Petar','Petrovic'),
+(6,'Ilija','Ilic');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
